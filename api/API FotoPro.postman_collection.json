@@ -1,0 +1,549 @@
+{
+  "info": {
+    "_postman_id": "d8d9f06c-be85-4aa6-a6e7-96e7d8fee67e",
+    "name": "API FotoPro",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49000617",
+    "_collection_link": "https://go.postman.co/collection/49000617-d8d9f06c-be85-4aa6-a6e7-96e7d8fee67e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Usuario",
+      "item": [
+        {
+          "name": "Obtener Usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/usuario",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuario"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar Por Nombre",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/usuario/buscar/Ana",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuario",
+                "buscar",
+                "Ana"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener por Rol",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/usuario/rol/PROFESIONAL",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuario",
+                "rol",
+                "PROFESIONAL"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar Estado",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"estado\": \"ACTIVO\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/usuario/6/estado",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuario",
+                "6",
+                "estado"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CategoriaServicio",
+      "item": [
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/categoria",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "categoria"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar Estado",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"activo\": false }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/categoria/5/estado",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "categoria",
+                "5",
+                "estado"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Especialidad",
+      "item": [
+        {
+          "name": "Listar Especialidades",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/especialidad",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "especialidad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar Estado",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"activo\": false }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/especialidad/1/estado",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "especialidad",
+                "1",
+                "estado"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Perfil Profesional",
+      "item": [
+        {
+          "name": "Listar Profesionales",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/profesional",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "profesional"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle Profesional",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/profesional/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "profesional",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Profesional",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Roberto\",\r\n  \"apellidos\": \"Salazar Quesada\",\r\n  \"correo\": \"roberto@fotopro.com\",\r\n  \"telefono\": \"88991122\",\r\n  \"contrasenaHash\": \"clave123\",\r\n  \"tituloProfesional\": \"Fotógrafo de naturaleza\",\r\n  \"descripcion\": \"Especialista en fotografía de fauna y paisajes costarricenses.\",\r\n  \"aniosExperiencia\": 7,\r\n  \"modalidad\": \"PRESENCIAL\",\r\n  \"provincia\": \"Guanacaste\",\r\n  \"canton\": \"Nicoya\",\r\n  \"distrito\": \"Nicoya\",\r\n  \"tarifaBase\": 95000,\r\n  \"disponible\": true,\r\n  \"especialidadIds\": [1, 3]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/profesional",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "profesional"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar Profesional",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"tituloProfesional\": \"Fotógrafo de naturaleza y drone\",\r\n  \"tarifaBase\": 120000,\r\n  \"especialidadIds\": [1, 2, 3]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/profesional/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "profesional",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar Disponibilidad",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"disponible\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/profesional/4/disponibilidad",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "profesional",
+                "4",
+                "disponibilidad"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Servicio",
+      "item": [
+        {
+          "name": "Listar Servicios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/servicio",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "servicio"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle Servicio",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/servicio/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "servicio",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Servicio",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"perfilProfesionalId\": 1,\r\n  \"categoriaId\": 1,\r\n  \"nombre\": \"Sesión fotográfica de familia\",\r\n  \"descripcion\": \"Sesión de 2 horas en exteriores con entrega de 60 fotos editadas.\",\r\n  \"precio\": 85000,\r\n  \"duracionMin\": 120,\r\n  \"modalidad\": \"PRESENCIAL\",\r\n  \"activo\": true,\r\n  \"especialidadIds\": [1, 4]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/servicio",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "servicio"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Servicio",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \r\n  \"precio\": 950000,\r\n  \"especialidadIds\": [1, 2, 4]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/servicio/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "servicio",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar Estado",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"activo\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/servicio/1/estado",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "servicio",
+                "1",
+                "estado"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cita",
+      "item": [
+        {
+          "name": "Listar citas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/cita",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "cita"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle Cita",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/cita/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "cita",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Cita",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"clienteId\": 7,\r\n  \"perfilProfesionalId\": 1,\r\n  \"servicioId\": 1,\r\n  \"modalidad\": \"PRESENCIAL\",\r\n  \"fechaCita\": \"2026-08-20\",\r\n  \"horaInicio\": \"10:00\",\r\n  \"horaFin\": \"18:00\",\r\n  \"comentarioCliente\": \"Boda al aire libre en jardín privado en Santa Ana.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/cita",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "cita"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
