@@ -82,6 +82,42 @@ export class PerfilProfesionalController {
 
 };
 
+obtenerPorUsuarioId = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+) => {
+
+    try {
+
+        const usuarioId = Number(request.params.usuarioId);
+
+        const profesional =
+            await perfilProfesionalService.obtenerPorUsuarioId(usuarioId);
+
+        if (!profesional) {
+
+            return response.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: "Profesional no encontrado"
+            });
+
+        }
+
+        return response.status(StatusCodes.OK).json({
+            success: true,
+            data: profesional
+        });
+
+    } catch (error) {
+
+        console.error(error);
+        next(error);
+
+    }
+
+};
+
 crear = async (request: Request, response: Response, next: NextFunction) => {
     const perfil = await perfilProfesionalService.crear(request.body);
     return sendSuccess(response, perfil, "Perfil profesional creado correctamente", StatusCodes.CREATED);

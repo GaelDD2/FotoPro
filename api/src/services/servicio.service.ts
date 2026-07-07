@@ -76,6 +76,43 @@ export const servicioService = {
         });
 
     },
+    async listarByProfesional(perfilProfesionalId: number) {
+
+    return await prisma.servicio.findMany({
+
+        where: {
+            perfilProfesionalId
+        },
+
+        select: {
+
+            id: true,
+
+            nombre: true,
+
+            descripcion: true,
+
+            precio: true,
+
+            duracionMin: true,
+
+            modalidad: true,
+
+            activo: true,
+
+            categoria: {
+
+                select: {
+                    nombre: true
+                }
+
+            }
+
+        }
+
+    });
+
+},
 
     async details(id: number) {
 

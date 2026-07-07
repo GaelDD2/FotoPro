@@ -15,6 +15,9 @@ export class ServicioRoutes {
         // GET http://localhost:3000/servicio
         router.get("/", controller.listar);
 
+        //GET http://localhost:3000/servicio/profesional/3
+        router.get("/profesional/:id", controller.listarByProfesional);
+
         // GET http://localhost:3000/servicio/1
         router.get("/:id", controller.details);
         

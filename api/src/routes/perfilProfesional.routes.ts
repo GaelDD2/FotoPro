@@ -17,6 +17,9 @@ export class PerfilProfesionalRoutes {
 
          // GET http://localhost:3000/profesional/1
         router.get("/:id", controller.details);
+        
+        //GET http://localhost:3000/profesional/usuario/7
+        router.get("/usuario/:usuarioId", controller.obtenerPorUsuarioId);
 
         router.post(
       "/",

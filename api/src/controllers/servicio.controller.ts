@@ -58,6 +58,33 @@ export class ServicioController {
 
     };
 
+    listarByProfesional = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+) => {
+
+    try {
+
+        const perfilProfesionalId = Number(request.params.id);
+
+        const servicios =
+            await servicioService.listarByProfesional(perfilProfesionalId);
+
+        return response.status(StatusCodes.OK).json({
+            success: true,
+            data: servicios
+        });
+
+    } catch (error) {
+
+        console.error(error);
+        next(error);
+
+    }
+
+};
+
     details = async (
     request: Request,
     response: Response,

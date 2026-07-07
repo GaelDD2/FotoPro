@@ -172,6 +172,44 @@ export const perfilProfesionalService = {
     });
 
 },
+
+async obtenerPorUsuarioId(usuarioId: number) {
+
+    return await prisma.perfilProfesional.findUnique({
+
+        where: {
+            usuarioId
+        },
+
+        select: {
+
+            id: true,
+
+            usuarioId: true,
+
+            tituloProfesional: true,
+
+            modalidad: true,
+
+            tarifaBase: true,
+
+            disponible: true,
+
+            usuario: {
+
+                select: {
+                    nombre: true,
+                    apellidos: true,
+                    correo: true
+                }
+
+            }
+
+        }
+
+    });
+
+},
 async validarCorreoUnico(correo: string) {
     const existe = await prisma.usuario.findUnique({ where: { correo } });
     if (existe) {
