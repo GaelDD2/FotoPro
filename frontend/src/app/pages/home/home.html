@@ -1,0 +1,64 @@
+<section class="hero glass-card">
+  <div class="hero-content">
+    <h1>FotoPro</h1>
+    <p>
+      Conectamos clientes con fotógrafos y productores audiovisuales profesionales en Costa Rica.
+    </p>
+    <div class="hero-actions">
+      <button mat-flat-button routerLink="/profesionales">
+        Ver fotógrafos
+      </button>
+      <button mat-stroked-button routerLink="/servicios">
+        Ver servicios
+      </button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <mat-icon>photo_camera</mat-icon>
+  </div>
+</section>
+ 
+<section class="carousel-section">
+  <div class="carousel-header">
+    <h2>Destacados</h2>
+    <div class="carousel-controls">
+      <button mat-icon-button (click)="prev()" aria-label="Anterior">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button mat-icon-button (click)="next()" aria-label="Siguiente">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+ 
+  <div class="carousel-track-wrap">
+    <div
+      class="carousel-track"
+      [style.transform]="'translateX(-' + (activeIndex() * 100) + '%)'"
+    >
+      @for (slide of slides(); track slide.title) {
+        <div class="carousel-slide" [routerLink]="slide.path">
+          <img [src]="slide.image" [alt]="slide.title" class="slide-image" />
+          <div class="slide-overlay"></div>
+          <div class="slide-content">
+            <span class="slide-badge">{{ slide.badge }}</span>
+            <h3>{{ slide.title }}</h3>
+            <p>{{ slide.subtitle }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+ 
+  <div class="carousel-dots">
+    @for (slide of slides(); track slide.title; let i = $index) {
+      <button
+        class="dot"
+        [class.dot-active]="i === activeIndex()"
+        (click)="goTo(i)"
+        [attr.aria-label]="'Ir a ' + slide.title"
+      ></button>
+    }
+  </div>
+</section>
+ 

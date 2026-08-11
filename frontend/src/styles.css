@@ -1,0 +1,61 @@
+/* You can add global styles to this file, and also import other style files */
+.primary-button {
+    background-color: var(--mat-sys-primary) !important;
+    color: var(--mat-sys-on-primary) !important;
+}
+
+.secondary-button {
+    background-color: var(--mat-sys-secondary) !important;
+    color: var(--mat-sys-on-secondary) !important;
+}
+
+.tertiary-button {
+    background-color: var(--mat-sys-tertiary) !important;
+    color: var(--mat-sys-on-tertiary) !important;
+}
+
+.primary-icon-button {
+    color: var(--mat-sys-primary) !important;   
+}
+
+.secondary-icon-button {
+    color:  var(--mat-sys-secondary) !important;
+}
+
+.tertiary-icon-button {
+    color: var(--mat-sys-tertiary) !important;
+}
+.create-button {
+    background-color: #2e7d32 !important;
+    color: white !important;
+}
+
+.view-button {
+    background-color: #1976d2 !important;
+    color: white !important;
+}
+
+.edit-button {
+    background-color: #f57c00 !important;
+    color: white !important;
+}
+
+.delete-button {
+    background-color: #d32f2f !important;
+    color: white !important;
+}
+.create-icon-button {
+    color: #2e7d32 !important;
+}
+
+.view-icon-button {
+    color:  #1976d2 !important;
+}
+
+.edit-icon-button {
+    color: #f57c00 !important;
+}
+
+.delete-icon-button {
+    color: #d32f2f !important;
+}

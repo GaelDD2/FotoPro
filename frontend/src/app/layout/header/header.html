@@ -1,0 +1,131 @@
+<header class="site-header">
+  <mat-toolbar class="toolbar">
+
+    <!-- Logo -->
+    <a class="brand" routerLink="/">
+      <span class="brand-icon">
+        <mat-icon>photo_camera</mat-icon>
+      </span>
+      <span class="brand-text">
+        <strong>FotoPro</strong>
+       
+      </span>
+    </a>
+
+    <!-- Navegación desktop -->
+    <nav class="desktop-nav">
+      @for (item of publicMenu(); track item.path) {
+        @if (canShowItem()(item)) {
+          <a mat-button
+            [routerLink]="item.path"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: item.path === '/' }">
+            <mat-icon>{{ item.icon }}</mat-icon>
+            {{ item.label }}
+          </a>
+        }
+      }
+
+      @if (isAdmin) {
+        <button mat-button [matMenuTriggerFor]="mantenimientoMenu">
+          <mat-icon>settings</mat-icon>
+          Mantenimientos
+        </button>
+        <button mat-button [matMenuTriggerFor]="gestionMenu">
+          <mat-icon>admin_panel_settings</mat-icon>
+          Gestión
+        </button>
+      }
+    </nav>
+
+    <span class="spacer"></span>
+
+    <!-- Usuario logueado -->
+   @if (usuario(); as user) {
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+        <div class="user-chip">
+          <div class="user-avatar" [ngClass]="getRolColor(user.rol)">
+            <mat-icon>{{ getRolIcon(user.rol) }}</mat-icon>
+          </div>
+          <div class="user-data">
+            <span class="user-nombre">{{ user.nombre }}</span>
+            <span class="user-rol">{{ user.rol }}</span>
+          </div>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </div>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <div class="user-menu-header">
+          <strong>{{ user.nombre }} {{ user.apellidos }}</strong>
+          <small>{{ user.correo }}</small>
+        </div>
+        <mat-divider />
+        <button mat-menu-item routerLink="/mi-perfil">
+          <mat-icon>manage_accounts</mat-icon>
+          Mi perfil
+        </button>
+
+        <button mat-menu-item routerLink="/mi-reporte">
+          <mat-icon>bar_chart</mat-icon>
+          Mi reporte financiero
+        </button>
+        
+        <button mat-menu-item disabled>
+          <mat-icon>logout</mat-icon>
+          Cerrar sesión
+        </button>
+      </mat-menu>
+
+    } @else {
+      <!-- Sin usuario — selector de demo -->
+     
+    }
+
+    <!-- Menú móvil -->
+    <button class="mobile-menu-button" mat-icon-button [matMenuTriggerFor]="mobileMenu">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+  </mat-toolbar>
+</header>
+
+<!-- Menús desplegables de admin -->
+<mat-menu #mantenimientoMenu="matMenu">
+  @for (item of adminMantenimientoMenu(); track item.path) {
+    <a mat-menu-item [routerLink]="item.path">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.label }}</span>
+    </a>
+  }
+</mat-menu>
+
+<mat-menu #gestionMenu="matMenu">
+  @for (item of adminGestionMenu(); track item.path) {
+    <a mat-menu-item [routerLink]="item.path">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.label }}</span>
+    </a>
+  }
+</mat-menu>
+
+<mat-menu #mobileMenu="matMenu">
+  @for (item of publicMenu(); track item.path) {
+    @if (canShowItem()(item)) {
+      <a mat-menu-item [routerLink]="item.path">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  }
+  @if (isAdmin) {
+    <button mat-menu-item [matMenuTriggerFor]="mantenimientoMenu">
+      <mat-icon>settings</mat-icon>
+      <span>Mantenimientos</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="gestionMenu">
+      <mat-icon>admin_panel_settings</mat-icon>
+      <span>Gestión</span>
+    </button>
+  }
+</mat-menu>

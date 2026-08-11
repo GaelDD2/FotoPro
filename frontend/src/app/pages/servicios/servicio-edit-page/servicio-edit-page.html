@@ -1,0 +1,21 @@
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando servicio...</p>
+  </div>
+} @else if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button routerLink="/servicios">Volver</button>
+  </div>
+} @else {
+  <app-servicio-form
+    [servicio]="servicio()"
+    [saving]="saving()"
+    [categorias]="categorias()"
+    [especialidades]="especialidades()"
+    (guardar)="guardar($event)"
+    (cancelar)="cancelar()"
+  />
+}

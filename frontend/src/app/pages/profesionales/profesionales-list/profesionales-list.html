@@ -1,0 +1,164 @@
+
+<div class="page-header">
+  <div>
+    <h1>Fotógrafos y Productores</h1>
+    <p class="subtitle">
+      {{ totalProfesionales() }} profesional(es) encontrado(s)
+    </p>
+  </div>
+  @if (isAdmin) {
+<button mat-flat-button routerLink="/profesionales/registro">
+    <mat-icon>person_add</mat-icon>
+    Registrar profesional
+  </button>
+
+  }
+  
+</div>
+
+<!-- Filtros -->
+<div class="filters-bar">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Buscar profesional</mat-label>
+    <input
+      matInput
+      placeholder="Nombre, título, provincia..."
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Modalidad</mat-label>
+    <mat-select
+      [ngModel]="modalidad()"
+      (ngModelChange)="modalidad.set($event)"
+    >
+      <mat-option [value]="null">Todas</mat-option>
+      <mat-option value="PRESENCIAL">Presencial</mat-option>
+      <mat-option value="VIRTUAL">Virtual</mat-option>
+      <mat-option value="MIXTA">Mixta</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  @if (search() || modalidad()) {
+    <button mat-stroked-button (click)="limpiarFiltros()">
+      <mat-icon>clear</mat-icon>
+      Limpiar filtros
+    </button>
+  }
+</div>
+
+<!-- Loading -->
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando profesionales...</p>
+  </div>
+}
+
+<!-- Error -->
+@if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button (click)="cargarProfesionales()">
+      Reintentar
+    </button>
+  </div>
+}
+
+<!-- Sin resultados -->
+@if (!loading() && !error() && profesionalesFiltrados().length === 0) {
+  <div class="empty-container">
+    <mat-icon>search_off</mat-icon>
+    <p>No se encontraron profesionales con esos criterios.</p>
+    <button mat-stroked-button (click)="limpiarFiltros()">
+      Ver todos
+    </button>
+  </div>
+}
+
+<!-- Grid de profesionales -->
+@if (!loading() && !error()) {
+  <div class="profesionales-grid">
+    @for (profesional of profesionalesFiltrados(); track profesional.id) {
+      <mat-card class="profesional-card">
+
+        <!-- Avatar -->
+        <div class="card-avatar">
+          @if (profesional.imagenPerfilUrl) {
+            <img [src]="getImageUrl(profesional.imagenPerfilUrl)" [alt]="profesional.imagenPerfilUrl" />
+          } @else {
+            <mat-icon>person</mat-icon>
+          }
+        </div>
+
+        <mat-card-header>
+          <mat-card-title>
+            {{ profesional.usuario.nombre }} {{ profesional.usuario.apellidos }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ profesional.tituloProfesional }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+
+          <!-- Disponibilidad -->
+          <div class="disponibilidad" [class.disponible]="profesional.disponible">
+            <mat-icon>{{ profesional.disponible ? 'check_circle' : 'cancel' }}</mat-icon>
+            {{ profesional.disponible ? 'Disponible' : 'No disponible' }}
+          </div>
+
+          <!-- Info básica -->
+          <div class="info-row">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ profesional.provincia }}, {{ profesional.canton }}</span>
+          </div>
+
+          <div class="info-row">
+            <mat-icon>videocam</mat-icon>
+            <span>{{ profesional.modalidad }}</span>
+          </div>
+
+          @if (profesional.aniosExperiencia) {
+            <div class="info-row">
+              <mat-icon>workspace_premium</mat-icon>
+              <span>{{ profesional.aniosExperiencia }} años de experiencia</span>
+            </div>
+          }
+
+          @if (profesional.tarifaBase) {
+            <div class="info-row tarifa">
+              <mat-icon>payments</mat-icon>
+              <span>Desde ₡{{ profesional.tarifaBase | number }}</span>
+            </div>
+          }
+
+          <!-- Especialidades -->
+          @if (profesional.especialidades?.length) {
+            <div class="especialidades">
+              @for (esp of profesional.especialidades.slice(0, 3); track esp.especialidad.id) {
+                <mat-chip>{{ esp.especialidad.nombre }}</mat-chip>
+              }
+              @if (profesional.especialidades.length > 3) {
+                <mat-chip>+{{ profesional.especialidades.length - 3 }} más</mat-chip>
+              }
+            </div>
+          }
+
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-flat-button [routerLink]="['/profesionales', profesional.id]">
+            <mat-icon>visibility</mat-icon>
+            Ver perfil
+          </button>
+        </mat-card-actions>
+
+      </mat-card>
+    }
+  </div>
+}

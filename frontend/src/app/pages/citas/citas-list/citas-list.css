@@ -1,0 +1,235 @@
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+/* Resumen */
+.summary-cards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  flex: 1;
+  min-width: 130px;
+}
+
+.summary-card mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.summary-card span {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.summary-card.pendiente  mat-icon { color: #f57c00; }
+.summary-card.aceptada   mat-icon { color: #1976d2; }
+.summary-card.completada mat-icon { color: #2e7d32; }
+.summary-card.cancelada  mat-icon { color: #c62828; }
+
+/* Filtros */
+.filters-bar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Lista de citas */
+.citas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cita-card {
+  border-radius: 12px;
+}
+
+.cita-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem 0;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cita-servicio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.cita-servicio mat-icon {
+  color: var(--mat-sys-primary);
+}
+
+/* Estado badges */
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.estado-badge mat-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.estado-pendiente  { background: #fff3e0; color: #e65100; }
+.estado-aceptada   { background: #e3f2fd; color: #0d47a1; }
+.estado-completada { background: #e8f5e9; color: #1b5e20; }
+.estado-rechazada  { background: #fce4ec; color: #880e4f; }
+.estado-cancelada  { background: #ffebee; color: #b71c1c; }
+
+/* Cuerpo de la cita */
+.cita-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cita-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-item mat-icon {
+  font-size: 1.2rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  opacity: 0.5;
+}
+
+.info-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item small {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.info-item span {
+  font-size: 0.9rem;
+}
+
+.monto {
+  font-weight: 700;
+  color: var(--mat-sys-primary);
+}
+
+.personas {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.persona-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.persona-item mat-icon {
+  font-size: 1.2rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  opacity: 0.5;
+}
+
+.persona-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.persona-item small {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.persona-item span {
+  font-size: 0.9rem;
+}
+
+.comentario {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: var(--mat-sys-surface-variant);
+  font-size: 0.9rem;
+}
+
+.comentario mat-icon {
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.comentario p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Estados vacíos */
+.loading-container,
+.error-container,
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.error-container mat-icon,
+.empty-container mat-icon {
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+}

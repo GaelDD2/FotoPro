@@ -1,0 +1,156 @@
+<!-- Loading -->
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando perfil...</p>
+  </div>
+}
+
+<!-- Error -->
+@if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button routerLink="/profesionales">Volver</button>
+  </div>
+}
+
+<!-- Detalle -->
+@if (!loading() && !error() && profesional(); as p) {
+  <div class="detalle-container">
+
+    <!-- Botón volver -->
+    <button mat-stroked-button routerLink="/profesionales" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+      Volver al listado
+    </button>
+
+    <!-- Header del perfil -->
+    <mat-card class="perfil-header">
+      <div class="perfil-avatar">
+        @if (p.imagenPerfilUrl) {
+           <img [src]="getImageUrl(p.imagenPerfilUrl)" [alt]="p.imagenPerfilUrl" />
+        } @else {
+          <mat-icon>person</mat-icon>
+        }
+      </div>
+
+      <div class="perfil-info">
+        <h1>{{ p.usuario.nombre }} {{ p.usuario.apellidos }}</h1>
+        <p class="titulo">{{ p.tituloProfesional }}</p>
+
+        <div class="perfil-badges">
+          <span class="badge" [class.disponible]="p.disponible">
+            <mat-icon>{{ p.disponible ? 'check_circle' : 'cancel' }}</mat-icon>
+            {{ p.disponible ? 'Disponible' : 'No disponible' }}
+          </span>
+          <span class="badge">
+            <mat-icon>videocam</mat-icon>
+            {{ p.modalidad }}
+          </span>
+          @if (p.aniosExperiencia) {
+            <span class="badge">
+              <mat-icon>workspace_premium</mat-icon>
+              {{ p.aniosExperiencia }} años de experiencia
+            </span>
+          }
+        </div>
+      </div>
+
+      @if (p.tarifaBase) {
+        <div class="tarifa-box">
+          <small>Tarifa base</small>
+          <strong>₡{{ p.tarifaBase | number }}</strong>
+          <small>por sesión</small>
+        </div>
+      }
+      
+      @if(isAdmin){
+        <button mat-flat-button color="primary" [routerLink]="['/profesionales', p.id, 'editar']">
+        <mat-icon>edit</mat-icon>
+        Editar perfil
+      </button>
+      }
+      
+
+
+    </mat-card>
+
+    <div class="detalle-grid">
+
+      <!-- Descripción y contacto -->
+      <mat-card class="info-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>info</mat-icon>
+            Sobre el profesional
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (p.descripcion) {
+            <p>{{ p.descripcion }}</p>
+          }
+          <mat-divider />
+          <div class="contacto-grid">
+            <div class="info-row">
+              <mat-icon>location_on</mat-icon>
+              <span>{{ p.provincia }}, {{ p.canton }}, {{ p.distrito }}</span>
+            </div>
+            <div class="info-row">
+              <mat-icon>email</mat-icon>
+              <span>{{ p.usuario.correo }}</span>
+            </div>
+            <div class="info-row">
+              <mat-icon>phone</mat-icon>
+              <span>{{ p.usuario.telefono }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Especialidades -->
+      @if (p.especialidades?.length) {
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>star</mat-icon>
+              Especialidades
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="chips-container">
+              @for (esp of p.especialidades; track esp.especialidad.id) {
+                <mat-chip>{{ esp.especialidad.nombre }}</mat-chip>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <!-- Servicios -->
+      @if (p.servicios?.length) {
+        <mat-card class="info-card servicios-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>camera_alt</mat-icon>
+              Servicios disponibles
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @for (servicio of p.servicios; track servicio.id) {
+              <div class="servicio-item">
+                <div class="servicio-info">
+                  <strong>{{ servicio.nombre }}</strong>
+                  <small>{{ servicio.duracionMin }} min · {{ servicio.modalidad }}</small>
+                </div>
+                <span class="servicio-precio">₡{{ servicio.precio | number }}</span>
+              </div>
+              <mat-divider />
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+
+    </div>
+  </div>
+}

@@ -1,0 +1,200 @@
+.reporte-container {
+  max-width: 1300px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===========================
+   LOADING / ERROR
+=========================== */
+
+.loading-container,
+.error-container {
+  min-height: 350px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.error-container mat-icon {
+  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  color: var(--mat-sys-error);
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin-top: .35rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* ===========================
+   RESUMEN
+=========================== */
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.summary-card {
+  padding: 1.5rem;
+  border-radius: 16px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+
+  transition: .2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+}
+
+.summary-card strong {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.summary-card span {
+  margin-top: .5rem;
+  text-align: center;
+  font-size: .9rem;
+}
+
+/* ===========================
+   TARJETAS
+=========================== */
+
+.tabla-card {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.tabla-card mat-card-header {
+  padding-bottom: .75rem;
+}
+
+.tabla-card mat-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* ===========================
+   TABLAS
+=========================== */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-simple th,
+.mat-mdc-header-cell {
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+
+  font-weight: 600;
+  font-size: .95rem;
+}
+
+.tabla-simple th,
+.tabla-simple td,
+.mat-mdc-header-cell,
+.mat-mdc-cell {
+  padding: .9rem 1rem;
+}
+
+.tabla-simple tbody tr,
+.mat-mdc-row {
+  transition: background .2s;
+}
+
+.tabla-simple tbody tr:nth-child(even),
+.mat-mdc-row:nth-child(even) {
+  background: var(--mat-sys-surface-container-low);
+}
+
+.tabla-simple tbody tr:hover,
+.mat-mdc-row:hover {
+  background: var(--mat-sys-secondary-container);
+}
+
+.tabla-simple td,
+.mat-mdc-cell {
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+/* ===========================
+   BOTÓN
+=========================== */
+
+button[mat-flat-button] {
+  min-width: 180px;
+}
+
+button mat-spinner {
+  display: inline-block;
+  margin-right: .5rem;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 900px) {
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  button[mat-flat-button] {
+    width: 100%;
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .tabla-card {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 700px;
+  }
+}

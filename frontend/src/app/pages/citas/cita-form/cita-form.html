@@ -1,0 +1,101 @@
+<mat-card class="cita-form-card">
+  <mat-card-content>
+
+    @if (cliente()) {
+      <div class="cliente-info">
+        <mat-icon>person</mat-icon>
+        <span>{{ cliente()?.nombre }} {{ cliente()?.apellidos }} · {{ cliente()?.correo }}</span>
+      </div>
+    }
+
+    <!-- Servicio fijo, no editable -->
+    @if (servicio(); as s) {
+      <div class="servicio-fijo">
+        <div class="servicio-fijo-header">
+          <mat-icon>design_services</mat-icon>
+          <span class="servicio-fijo-label">Servicio seleccionado</span>
+        </div>
+        <div class="servicio-fijo-body">
+          <strong>{{ s.nombre }}</strong>
+          <span class="servicio-fijo-profesional">
+            {{ s.perfilProfesional.usuario.nombre }} {{ s.perfilProfesional.usuario.apellidos }}
+            · {{ s.perfilProfesional.tituloProfesional }}
+          </span>
+          <div class="servicio-fijo-meta">
+            <span class="badge">
+              <mat-icon>schedule</mat-icon>
+              {{ formatDuracion(s.duracionMin) }}
+            </span>
+            <span class="badge">
+              <mat-icon>videocam</mat-icon>
+              {{ s.modalidad }}
+            </span>
+            <span class="badge">
+              <mat-icon>payments</mat-icon>
+              ₡{{ s.precio | number }}
+            </span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <form class="cita-form" (submit)="$event.preventDefault(); submit()">
+
+      <section class="form-section">
+        <div class="form-grid three-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha</mat-label>
+            <input matInput type="date" [formField]="citaForm.fecha" />
+            @if (citaForm.fecha().touched() && citaForm.fecha().invalid()) {
+              <mat-error>{{ citaForm.fecha().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Hora de inicio</mat-label>
+            <input matInput type="time" [formField]="citaForm.horaInicio" />
+            @if (citaForm.horaInicio().touched() && citaForm.horaInicio().invalid()) {
+              <mat-error>{{ citaForm.horaInicio().errors()[0].message }}</mat-error>
+            }
+            <mat-hint>La duración estimada es de {{ formatDuracion(servicio()?.duracionMin ?? 0) }}</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Modalidad</mat-label>
+            <mat-select [formField]="citaForm.modalidad">
+              @for (opcion of modalidadesDisponibles(); track opcion) {
+                <mat-option [value]="opcion">{{ opcion }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción / comentario</mat-label>
+          <textarea matInput rows="4" [formField]="citaForm.comentarioCliente"></textarea>
+          @if (citaForm.comentarioCliente().touched() && citaForm.comentarioCliente().invalid()) {
+            <mat-error>{{ citaForm.comentarioCliente().errors()[0].message }}</mat-error>
+          }
+        </mat-form-field>
+      </section>
+
+      <div class="form-actions">
+        <button mat-stroked-button color="accent" class="primary-icon-button" type="button" (click)="cancelar.emit()">
+          <mat-icon>close</mat-icon>
+          Cancelar
+        </button>
+
+        <button mat-stroked-button type="submit" color="primary" class="create-icon-button" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <mat-icon>hourglass_top</mat-icon>
+            Reservando...
+          } @else {
+            <mat-icon>calendar_month</mat-icon>
+            Reservar cita
+          }
+        </button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,17 @@
+<div class="app-shell">
+  <app-header
+    [publicMenu]="publicMenu"
+    [adminMantenimientoMenu]="adminMantenimientoMenu"
+    [adminGestionMenu]="adminGestionMenu"
+    
+    
+    
+    [canShowItem]="canShowItem.bind(this)"
+    
+    (cerrarSesion)="cerrarSesion()"
+  />
+  <main class="content">
+    <router-outlet />
+  </main>
+  <app-footer />
+</div>

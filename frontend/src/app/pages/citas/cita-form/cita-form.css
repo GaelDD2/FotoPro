@@ -1,0 +1,232 @@
+.cita-form-card {
+    max-width: 1100px;
+    margin: 24px auto;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.cita-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 12px 8px 8px;
+}
+
+/* Cliente */
+
+.cliente-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+    font-weight: 500;
+}
+
+.cliente-info mat-icon {
+    color: var(--mat-sys-secondary);
+    width: 28px;
+    height: 28px;
+    font-size: 28px;
+}
+
+/* Profesional seleccionado */
+
+.profesional-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+    font-weight: 500;
+}
+
+.profesional-info mat-icon {
+    color: var(--mat-sys-primary);
+    width: 26px;
+    height: 26px;
+    font-size: 26px;
+}
+
+/* Secciones */
+
+.form-section {
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 20px;
+    padding: 24px;
+    background: color-mix(
+        in srgb,
+        var(--mat-sys-surface-container-low) 82%,
+        transparent
+    );
+}
+
+/* Grid */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.three-columns {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Botones */
+
+.form-actions {
+    position: sticky;
+    bottom: 0;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    padding: 18px 0 6px;
+
+    background: color-mix(
+        in srgb,
+        var(--mat-sys-surface) 90%,
+        transparent
+    );
+
+    backdrop-filter: blur(8px);
+}
+
+.create-icon-button mat-icon {
+    color: var(--mat-sys-primary);
+}
+
+.primary-icon-button mat-icon {
+    color: var(--mat-sys-error);
+}
+
+/* Header */
+
+.form-header {
+    padding: 28px 32px 12px;
+}
+
+.form-header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.form-subtitle {
+    margin-top: 8px;
+    color: var(--mat-sys-on-surface-variant);
+    font-size: .95rem;
+}
+/* Servicio fijo (no editable) */
+.servicio-fijo {
+    margin-bottom: 8px;
+    padding: 20px;
+    border-radius: 18px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    background: color-mix(in srgb, var(--mat-sys-primary-container) 55%, transparent);
+}
+
+.servicio-fijo-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.servicio-fijo-header mat-icon {
+    color: var(--mat-sys-primary);
+}
+
+.servicio-fijo-label {
+    font-size: .8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--mat-sys-on-primary-container);
+}
+
+.servicio-fijo-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.servicio-fijo-body strong {
+    font-size: 1.1rem;
+}
+
+.servicio-fijo-profesional {
+    color: var(--mat-sys-on-surface-variant);
+    font-size: .9rem;
+}
+
+.servicio-fijo-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.servicio-fijo-meta .badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--mat-sys-surface);
+    font-size: .85rem;
+}
+
+.servicio-fijo-meta .badge mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+/* Responsive */
+
+@media (max-width: 900px) {
+
+    .three-columns {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .cita-form-card {
+        margin: 12px;
+        border-radius: 18px;
+    }
+
+    .form-section {
+        padding: 18px;
+    }
+
+    .cliente-info,
+    .profesional-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+
+}

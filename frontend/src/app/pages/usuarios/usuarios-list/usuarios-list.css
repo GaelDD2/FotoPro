@@ -1,0 +1,227 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+/* Tarjetas de resumen */
+.summary-cards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.summary-card mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  opacity: 0.6;
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.summary-card span {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.summary-card.activos mat-icon    { color: #2e7d32; }
+.summary-card.admin mat-icon      { color: var(--mat-sys-primary); }
+.summary-card.profesional mat-icon { color: var(--mat-sys-secondary); }
+.summary-card.cliente mat-icon    { color: var(--mat-sys-tertiary); }
+
+/* Filtros */
+.filters-bar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.search-field {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* Tabla */
+.table-container {
+  border-radius: 12px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+td.mat-cell {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+.fila-inactiva {
+  opacity: 0.5;
+}
+
+/* Celda usuario */
+.usuario-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar-mini {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--mat-sys-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar-mini mat-icon {
+  font-size: 1.2rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  opacity: 0.6;
+}
+
+.usuario-info strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.correo {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.fecha {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+/* Badges de rol */
+.rol-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.rol-badge mat-icon {
+  font-size: 0.9rem;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.rol-admin {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.rol-profesional {
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.rol-cliente {
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+/* Badge de estado */
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
+
+.estado-badge.activo {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.estado-badge mat-icon {
+  font-size: 0.9rem;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* Estados vacíos */
+.loading-container,
+.error-container,
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.error-container mat-icon,
+.empty-container mat-icon {
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+@media (max-width: 768px) {
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

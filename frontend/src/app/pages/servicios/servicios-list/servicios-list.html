@@ -1,0 +1,170 @@
+<div class="page-header">
+
+  <div>
+    <h1>Servicios</h1>
+    <p class="subtitle">
+      {{ totalServicios() }} servicio(s) encontrado(s)
+    </p>
+  </div>
+@if (isProfesional) {
+
+  <button
+    mat-flat-button
+    color="primary"
+    routerLink="/servicios/crear"
+  >
+    <mat-icon>add</mat-icon>
+    Nuevo servicio
+  </button>
+}
+  
+
+</div>
+
+<!-- Filtros -->
+<div class="filters-bar">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Buscar servicio</mat-label>
+    <input
+      matInput
+      placeholder="Nombre, descripción, fotógrafo..."
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Categoría</mat-label>
+    <mat-select
+      [ngModel]="categoriaId()"
+      (ngModelChange)="categoriaId.set($event)"
+    >
+      <mat-option [value]="null">Todas</mat-option>
+      @for (cat of categorias(); track cat.id) {
+        <mat-option [value]="cat.id">{{ cat.nombre }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Modalidad</mat-label>
+    <mat-select
+      [ngModel]="modalidad()"
+      (ngModelChange)="modalidad.set($event)"
+    >
+      <mat-option [value]="null">Todas</mat-option>
+      <mat-option value="PRESENCIAL">Presencial</mat-option>
+      <mat-option value="VIRTUAL">Virtual</mat-option>
+      <mat-option value="MIXTA">Mixta</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  @if (search() || categoriaId() || modalidad()) {
+    <button mat-stroked-button (click)="limpiarFiltros()">
+      <mat-icon>clear</mat-icon>
+      Limpiar filtros
+    </button>
+  }
+</div>
+
+<!-- Loading -->
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando servicios...</p>
+  </div>
+}
+
+<!-- Error -->
+@if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button (click)="cargarServicios()">
+      Reintentar
+    </button>
+  </div>
+}
+
+<!-- Sin resultados -->
+@if (!loading() && !error() && serviciosFiltrados().length === 0) {
+  <div class="empty-container">
+    <mat-icon>search_off</mat-icon>
+    <p>No se encontraron servicios con esos criterios.</p>
+    <button mat-stroked-button (click)="limpiarFiltros()">
+      Ver todos
+    </button>
+  </div>
+}
+
+<!-- Grid de servicios -->
+@if (!loading() && !error()) {
+  <div class="servicios-grid">
+    @for (servicio of serviciosFiltrados(); track servicio.id) {
+      <mat-card class="servicio-card">
+
+        <!-- Badge de categoría -->
+        <div class="categoria-badge">
+          <mat-icon>folder</mat-icon>
+          {{ servicio.categoria?.nombre }}
+        </div>
+
+        <mat-card-header>
+          <mat-card-title>{{ servicio.nombre }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ servicio.perfilProfesional?.usuario?.nombre }}
+            {{ servicio.perfilProfesional?.usuario?.apellidos }}
+            · {{ servicio.perfilProfesional?.tituloProfesional }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+
+          <p class="descripcion">{{ servicio.descripcion }}</p>
+
+          <!-- Info del servicio -->
+          <div class="servicio-meta">
+            <div class="meta-item">
+              <mat-icon>schedule</mat-icon>
+              {{ formatDuracion(servicio.duracionMin) }}
+            </div>
+            <div class="meta-item">
+              <mat-icon>videocam</mat-icon>
+              {{ servicio.modalidad }}
+            </div>
+            <div class="meta-item">
+              <mat-icon>location_on</mat-icon>
+              {{ servicio.perfilProfesional?.provincia }}
+            </div>
+          </div>
+
+          <!-- Especialidades -->
+          @if (servicio.especialidades?.length) {
+            <div class="especialidades">
+              @for (esp of servicio.especialidades.slice(0, 2); track esp.especialidad.id) {
+                <mat-chip>{{ esp.especialidad.nombre }}</mat-chip>
+              }
+              @if (servicio.especialidades.length > 2) {
+                <mat-chip>+{{ servicio.especialidades.length - 2 }} más</mat-chip>
+              }
+            </div>
+          }
+
+        </mat-card-content>
+
+        <mat-card-actions class="card-actions">
+          <div class="precio">
+            ₡{{ servicio.precio | number }}
+          </div>
+          
+          <button mat-flat-button [routerLink]="['/servicios', servicio.id]">
+            <mat-icon>visibility</mat-icon>
+            Ver detalle
+          </button>
+        </mat-card-actions>
+
+      </mat-card>
+    }
+  </div>
+}

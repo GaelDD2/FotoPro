@@ -1,0 +1,287 @@
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.back-btn {
+  margin-bottom: 1.5rem;
+}
+
+.cita-header-card {
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cita-id {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+.cita-id mat-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.servicio-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.servicio-titulo mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: var(--mat-sys-primary);
+}
+
+.servicio-titulo h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+/* Acciones */
+.acciones {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Estado badges */
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.estado-badge mat-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.estado-pendiente  { background: #fff3e0; color: #e65100; }
+.estado-aceptada   { background: #e3f2fd; color: #0d47a1; }
+.estado-completada { background: #e8f5e9; color: #1b5e20; }
+.estado-rechazada  { background: #fce4ec; color: #880e4f; }
+.estado-cancelada  { background: #ffebee; color: #b71c1c; }
+
+/* Grid de detalle */
+.detalle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.info-card {
+  border-radius: 12px;
+}
+
+.info-card mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Info grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.info-item small {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.info-item strong {
+  font-size: 0.95rem;
+}
+
+.monto {
+  color: var(--mat-sys-primary);
+  font-size: 1.1rem !important;
+}
+
+/* Personas */
+.persona-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+}
+
+.persona-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.persona-avatar.cliente {
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+.persona-avatar.profesional {
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.persona-avatar mat-icon {
+  font-size: 1.4rem;
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.persona-header div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.persona-header small {
+  opacity: 0.6;
+  font-size: 0.82rem;
+}
+
+.comentario-section {
+  margin-top: 0.75rem;
+}
+
+.comentario-section small {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.comentario-section p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.sin-respuesta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  opacity: 0.5;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.sin-respuesta mat-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Historial */
+.historial-card {
+  grid-column: 1 / -1;
+}
+
+.historial-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.historial-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.75rem 0;
+}
+
+.historial-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.historial-dot mat-icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.historial-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.historial-estados {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.historial-estados mat-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  opacity: 0.5;
+}
+
+.estado-from {
+  opacity: 0.5;
+  font-size: 0.8rem;
+}
+
+.historial-motivo {
+  font-size: 0.82rem;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.historial-fecha {
+  font-size: 0.78rem;
+  opacity: 0.5;
+}

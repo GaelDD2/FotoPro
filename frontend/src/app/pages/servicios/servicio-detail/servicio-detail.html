@@ -1,0 +1,169 @@
+<!-- Loading -->
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando servicio...</p>
+  </div>
+}
+
+<!-- Error -->
+@if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button routerLink="/servicios">Volver</button>
+  </div>
+}
+
+<!-- Detalle -->
+@if (!loading() && !error() && servicio(); as s) {
+  <div class="detalle-container">
+
+    <!-- Botón volver -->
+    <button mat-stroked-button routerLink="/servicios" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+      Volver a servicios
+    </button>
+    @if (!isCliente) {
+    <button mat-stroked-button [routerLink]="['/servicios', s.id, 'editar']" class="back-btn">
+      <mat-icon>edit</mat-icon>
+      Editar servicio
+    </button>
+    }
+    
+
+    <!-- Header del servicio -->
+    <mat-card class="servicio-header">
+      <div class="header-top">
+        <div class="categoria-badge">
+          <mat-icon>folder</mat-icon>
+          {{ s.categoria?.nombre }}
+        </div>
+      </div>
+
+      <div class="header-body">
+        <div class="header-info">
+          <h1>{{ s.nombre }}</h1>
+          <p class="descripcion">{{ s.descripcion }}</p>
+
+          <div class="servicio-badges">
+            <span class="badge">
+              <mat-icon>schedule</mat-icon>
+              {{ formatDuracion(s.duracionMin) }}
+            </span>
+            <span class="badge">
+              <mat-icon>videocam</mat-icon>
+              {{ s.modalidad }}
+            </span>
+          </div>
+        </div>
+
+        <div class="precio-box">
+          <small>Precio del servicio</small>
+          <strong>₡{{ s.precio | number }}</strong>
+
+          @if (isCliente) {
+          <button mat-flat-button [routerLink]="['/citas/crear']" [queryParams]="{ servicioId: servicio()?.id }">
+            <mat-icon>calendar_month</mat-icon>
+            Reservar cita
+          </button>
+          }
+          
+          @if (esDuenio()) {
+          <button mat-stroked-button [disabled]="actualizandoEstado()" (click)="cambiarEstadoServicio()">
+            @if (actualizandoEstado()) {
+            <mat-spinner diameter="18" />
+            } @else {
+            <mat-icon>{{ s.activo ? 'toggle_off' : 'toggle_on' }}</mat-icon>
+            }
+            {{ s.activo ? 'Desactivar servicio' : 'Activar servicio' }}
+          </button>
+          }
+
+
+        </div>
+      </div>
+    </mat-card>
+
+    <div class="detalle-grid">
+
+      <!-- Profesional -->
+      <mat-card class="info-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>person</mat-icon>
+            Fotógrafo / Profesional
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="profesional-preview">
+            <div class="profesional-avatar">
+              @if (s.perfilProfesional?.imagenPerfilUrl) {
+                <img
+                  [src]="getImageUrl(s.perfilProfesional.imagenPerfilUrl)"
+                  [alt]="s.perfilProfesional.usuario.nombre"
+                />
+              } @else {
+                <mat-icon>person</mat-icon>
+              }
+            </div>
+            <div class="profesional-info">
+              <strong>
+                {{ s.perfilProfesional?.usuario?.nombre }}
+                {{ s.perfilProfesional?.usuario?.apellidos }}
+              </strong>
+              <span>{{ s.perfilProfesional?.tituloProfesional }}</span>
+              <small>
+                <mat-icon>location_on</mat-icon>
+                {{ s.perfilProfesional?.provincia }},
+                {{ s.perfilProfesional?.canton }}
+              </small>
+            </div>
+          </div>
+
+          <mat-divider />
+
+          <div class="contacto-grid">
+            <div class="info-row">
+              <mat-icon>email</mat-icon>
+              <span>{{ s.perfilProfesional?.usuario?.correo }}</span>
+            </div>
+            <div class="info-row">
+              <mat-icon>phone</mat-icon>
+              <span>{{ s.perfilProfesional?.usuario?.telefono }}</span>
+            </div>
+          </div>
+
+          <button
+            mat-stroked-button
+            class="ver-perfil-btn"
+            [routerLink]="['/profesionales', s.perfilProfesional?.id]"
+          >
+            <mat-icon>open_in_new</mat-icon>
+            Ver perfil completo
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Especialidades -->
+      @if (s.especialidades?.length) {
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>star</mat-icon>
+              Especialidades incluidas
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="chips-container">
+              @for (esp of s.especialidades; track esp.especialidad.id) {
+                <mat-chip>{{ esp.especialidad.nombre }}</mat-chip>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+
+    </div>
+  </div>
+}

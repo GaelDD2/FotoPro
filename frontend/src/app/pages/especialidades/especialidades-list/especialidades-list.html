@@ -1,0 +1,118 @@
+<div class="page-header">
+  <div>
+    <h1>Especialidades</h1>
+    <p class="subtitle">
+      {{ totalEspecialidades() }} especialidad(es) encontrada(s)
+    </p>
+  </div>
+</div>
+
+<!-- Filtros -->
+<div class="filters-bar">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Buscar especialidad</mat-label>
+    <input
+      matInput
+      placeholder="Nombre o descripción..."
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Estado</mat-label>
+    <mat-select
+      [ngModel]="estado()"
+      (ngModelChange)="estado.set($event)"
+    >
+      <mat-option [value]="null">Todas</mat-option>
+      <mat-option [value]="true">Activas</mat-option>
+      <mat-option [value]="false">Inactivas</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  @if (search() || estado() !== null) {
+    <button mat-stroked-button (click)="limpiarFiltros()">
+      <mat-icon>clear</mat-icon>
+      Limpiar
+    </button>
+  }
+</div>
+
+<!-- Loading -->
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando especialidades...</p>
+  </div>
+}
+
+<!-- Error -->
+@if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button (click)="cargarEspecialidades()">Reintentar</button>
+  </div>
+}
+
+<!-- Sin resultados -->
+@if (!loading() && !error() && especialidadesFiltradas().length === 0) {
+  <div class="empty-container">
+    <mat-icon>search_off</mat-icon>
+    <p>No se encontraron especialidades con esos criterios.</p>
+    <button mat-stroked-button (click)="limpiarFiltros()">Ver todas</button>
+  </div>
+}
+
+<!-- Grid -->
+@if (!loading() && !error()) {
+  <div class="items-grid">
+    @for (especialidad of especialidadesFiltradas(); track especialidad.id) {
+      <mat-card class="item-card" [class.inactiva]="!especialidad.activo">
+
+        <!-- Ícono -->
+        <div class="card-icon-wrap">
+          <mat-icon>star</mat-icon>
+        </div>
+
+        <mat-card-header>
+          <mat-card-title>{{ especialidad.nombre }}</mat-card-title>
+          <mat-card-subtitle>
+            @if (especialidad.descripcion) {
+              {{ especialidad.descripcion }}
+            } @else {
+              Sin descripción
+            }
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Badge de estado -->
+          <div class="estado-badge" [class.activo]="especialidad.activo">
+            <mat-icon>
+              {{ especialidad.activo ? 'check_circle' : 'cancel' }}
+            </mat-icon>
+            {{ especialidad.activo ? 'Activa' : 'Inactiva' }}
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-stroked-button [disabled]="actualizandoEstadoId() === especialidad.id"
+            (click)="cambiarEstadoEspecialidad(especialidad)">
+            @if (actualizandoEstadoId() === especialidad.id) {
+            <mat-spinner diameter="18" />
+            } @else {
+            <mat-icon>
+              {{ especialidad.activo ? 'toggle_off' : 'toggle_on' }}
+            </mat-icon>
+            }
+            {{ especialidad.activo ? 'Desactivar' : 'Activar' }}
+          </button>
+        </mat-card-actions>
+
+      </mat-card>
+    }
+  </div>
+}

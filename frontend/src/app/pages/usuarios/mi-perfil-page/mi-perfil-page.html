@@ -1,0 +1,37 @@
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando tu perfil...</p>
+  </div>
+} @else if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+  </div>
+} @else if (perfil(); as p) {
+  <mat-card class="mi-perfil-card">
+    <mat-card-header>
+      <mat-card-title>Mi perfil profesional</mat-card-title>
+      <mat-card-subtitle>{{ p.tituloProfesional }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="disponibilidad-row">
+        <div class="disponibilidad-info">
+          <strong>Disponible para nuevas citas</strong>
+          <small>
+            @if (p.disponible) {
+              Los clientes pueden reservarte servicios ahora mismo.
+            } @else {
+              No aparecerás disponible para nuevas reservas.
+            }
+          </small>
+        </div>
+        <mat-slide-toggle
+          [checked]="p.disponible"
+          [disabled]="actualizando()"
+          (change)="cambiarDisponibilidad($event)"
+        />
+      </div>
+    </mat-card-content>
+  </mat-card>
+}

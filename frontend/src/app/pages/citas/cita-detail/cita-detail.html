@@ -1,0 +1,230 @@
+<!-- Loading -->
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando cita...</p>
+  </div>
+}
+
+<!-- Error -->
+@if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button routerLink="/citas">Volver</button>
+  </div>
+}
+
+<!-- Detalle -->
+@if (!loading() && !error() && cita(); as c) {
+  <div class="detalle-container">
+
+    <!-- Botón volver -->
+    <button mat-stroked-button routerLink="/citas" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+      Volver a mis citas
+    </button>
+
+    <!-- Header de la cita -->
+    <mat-card class="cita-header-card">
+      <div class="header-top">
+        <div class="cita-id">
+          <mat-icon>confirmation_number</mat-icon>
+          Cita #{{ c.id }}
+        </div>
+        <div class="estado-badge" [class]="getEstadoClass(c.estado)">
+          <mat-icon>{{ getEstadoIcon(c.estado) }}</mat-icon>
+          {{ c.estado }}
+        </div>
+      </div>
+
+      <div class="servicio-titulo">
+        <mat-icon>camera_alt</mat-icon>
+        <h1>{{ c.servicio?.nombre }}</h1>
+      </div>
+
+      <!-- Acciones según rol y estado -->
+      <div class="acciones">
+        @if (puedeAceptar()) {
+          <button mat-flat-button
+            disabled
+            matTooltip="Disponible próximamente">
+            <mat-icon>check_circle</mat-icon>
+            Aceptar cita
+          </button>
+        }
+        @if (puedeRechazar()) {
+          <button mat-stroked-button
+            disabled
+            matTooltip="Disponible próximamente">
+            <mat-icon>cancel</mat-icon>
+            Rechazar cita
+          </button>
+        }
+        @if (puedeCompletar()) {
+          <button mat-flat-button
+            disabled
+            matTooltip="Disponible próximamente">
+            <mat-icon>task_alt</mat-icon>
+            Marcar completada
+          </button>
+        }
+        @if (puedeCancelar()) {
+          <button mat-stroked-button
+            disabled
+            matTooltip="Disponible próximamente">
+            <mat-icon>do_not_disturb</mat-icon>
+            Cancelar cita
+          </button>
+        }
+      </div>
+    </mat-card>
+
+    <div class="detalle-grid">
+
+      <!-- Fecha y horario -->
+      <mat-card class="info-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>calendar_today</mat-icon>
+            Fecha y Horario
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item">
+              <small>Fecha de la cita</small>
+              <strong>{{ c.fechaCita | date: 'EEEE dd/MM/yyyy' }}</strong>
+            </div>
+            <div class="info-item">
+              <small>Hora de inicio</small>
+              <strong>{{ c.horaInicio | date: 'HH:mm' }}</strong>
+            </div>
+            <div class="info-item">
+              <small>Hora de fin</small>
+              <strong>{{ c.horaFin | date: 'HH:mm' }}</strong>
+            </div>
+            <div class="info-item">
+              <small>Duración estimada</small>
+              <strong>{{ duracion() }}</strong>
+            </div>
+            <div class="info-item">
+              <small>Modalidad</small>
+              <strong>{{ c.modalidad }}</strong>
+            </div>
+            <div class="info-item">
+              <small>Monto estimado</small>
+              <strong class="monto">₡{{ c.montoEstimado | number }}</strong>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Cliente -->
+      <mat-card class="info-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>person</mat-icon>
+            Cliente
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="persona-header">
+            <div class="persona-avatar cliente">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div>
+              <strong>
+                {{ c.cliente?.nombre }} {{ c.cliente?.apellidos }}
+              </strong>
+              <small>{{ c.cliente?.correo }}</small>
+            </div>
+          </div>
+          <mat-divider />
+          @if (c.comentarioCliente) {
+            <div class="comentario-section">
+              <small>Comentario del cliente</small>
+              <p>{{ c.comentarioCliente }}</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Profesional -->
+      <mat-card class="info-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>badge</mat-icon>
+            Fotógrafo / Profesional
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="persona-header">
+            <div class="persona-avatar profesional">
+              <mat-icon>badge</mat-icon>
+            </div>
+            <div>
+              <strong>
+                {{ c.perfilProfesional?.usuario?.nombre }}
+                {{ c.perfilProfesional?.usuario?.apellidos }}
+              </strong>
+              <small>{{ c.perfilProfesional?.tituloProfesional }}</small>
+            </div>
+          </div>
+          <mat-divider />
+          @if (c.comentarioProfesional) {
+            <div class="comentario-section">
+              <small>Respuesta del profesional</small>
+              <p>{{ c.comentarioProfesional }}</p>
+            </div>
+          } @else {
+            <p class="sin-respuesta">
+              <mat-icon>hourglass_empty</mat-icon>
+              Sin respuesta del profesional aún
+            </p>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Historial de estados -->
+      @if (c.historial?.length) {
+        <mat-card class="info-card historial-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>history</mat-icon>
+              Historial de estados
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="historial-list">
+              @for (h of c.historial; track h.id) {
+                <div class="historial-item">
+                  <div class="historial-dot" [class]="getEstadoClass(h.estadoNuevo)">
+                    <mat-icon>{{ getEstadoIcon(h.estadoNuevo) }}</mat-icon>
+                  </div>
+                  <div class="historial-info">
+                    <div class="historial-estados">
+                      @if (h.estadoAnterior) {
+                        <span class="estado-from">{{ h.estadoAnterior }}</span>
+                        <mat-icon>arrow_forward</mat-icon>
+                      }
+                      <span class="estado-to">{{ h.estadoNuevo }}</span>
+                    </div>
+                    @if (h.motivo) {
+                      <small class="historial-motivo">{{ h.motivo }}</small>
+                    }
+                    <small class="historial-fecha">
+                      {{ h.fechaCambio | date: 'dd/MM/yyyy HH:mm' }}
+                    </small>
+                  </div>
+                </div>
+                <mat-divider />
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+
+    </div>
+  </div>
+}

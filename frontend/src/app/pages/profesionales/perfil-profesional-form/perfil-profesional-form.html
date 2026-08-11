@@ -1,0 +1,237 @@
+<mat-card class="perfil-form-card">
+  <mat-card-content>
+    <form class="perfil-form" (submit)="$event.preventDefault(); submit()">
+
+      <!-- Sección: Cuenta de usuario -->
+      <section class="form-section">
+        <div class="section-title">
+          <div>
+            <h3>Cuenta de usuario</h3>
+            <p>Estos datos se usan para iniciar sesión en la plataforma.</p>
+          </div>
+        </div>
+
+        <div class="form-grid three-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput type="text" [formField]="perfilForm.nombre" />
+            @if (perfilForm.nombre().touched() && perfilForm.nombre().invalid()) {
+              <mat-error>{{ perfilForm.nombre().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellidos</mat-label>
+            <input matInput type="text" [formField]="perfilForm.apellidos" />
+            @if (perfilForm.apellidos().touched() && perfilForm.apellidos().invalid()) {
+              <mat-error>{{ perfilForm.apellidos().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput type="tel" [formField]="perfilForm.telefono" />
+            @if (perfilForm.telefono().touched() && perfilForm.telefono().invalid()) {
+              <mat-error>{{ perfilForm.telefono().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        @if (isEdit()) {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo</mat-label>
+          <input matInput type="email" [value]="perfilModel().correo" disabled />
+          
+        </mat-form-field>
+        } @else {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo</mat-label>
+          <input matInput type="email" [formField]="perfilForm.correo" />
+          @if (perfilForm.correo().touched() && perfilForm.correo().invalid()) {
+          <mat-error>{{ perfilForm.correo().errors()[0].message }}</mat-error>
+          }
+        </mat-form-field>
+        }
+
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" [formField]="perfilForm.contrasenaHash" />
+          @if (perfilForm.contrasenaHash().touched() && perfilForm.contrasenaHash().invalid()) {
+          <mat-error>{{ perfilForm.contrasenaHash().errors()[0].message }}</mat-error>
+          }
+        </mat-form-field>
+      
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar contraseña</mat-label>
+          <input matInput type="password" [formField]="perfilForm.confirmarContrasena" />
+          @if (perfilForm.confirmarContrasena().touched() && perfilForm.confirmarContrasena().invalid()) {
+          <mat-error>{{ perfilForm.confirmarContrasena().errors()[0].message }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      
+      </section>
+
+      <!-- Sección: Perfil profesional -->
+      <section class="form-section">
+        <div class="section-title">
+          <div>
+            <h3>Perfil profesional</h3>
+            <p>Información que verán los clientes en el marketplace.</p>
+          </div>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Título profesional</mat-label>
+          <input matInput type="text" [formField]="perfilForm.tituloProfesional" />
+          @if (perfilForm.tituloProfesional().touched() && perfilForm.tituloProfesional().invalid()) {
+            <mat-error>{{ perfilForm.tituloProfesional().errors()[0].message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción</mat-label>
+          <textarea matInput rows="4" [formField]="perfilForm.descripcion"></textarea>
+          @if (perfilForm.descripcion().touched() && perfilForm.descripcion().invalid()) {
+            <mat-error>{{ perfilForm.descripcion().errors()[0].message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="form-grid three-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Años de experiencia</mat-label>
+            <input matInput type="number" [formField]="perfilForm.aniosExperiencia" />
+            @if (perfilForm.aniosExperiencia().touched() && perfilForm.aniosExperiencia().invalid()) {
+              <mat-error>{{ perfilForm.aniosExperiencia().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tarifa base (₡)</mat-label>
+            <input matInput type="number" [formField]="perfilForm.tarifaBase" />
+            @if (perfilForm.tarifaBase().touched() && perfilForm.tarifaBase().invalid()) {
+              <mat-error>{{ perfilForm.tarifaBase().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Modalidad</mat-label>
+            <mat-select [formField]="perfilForm.modalidad">
+              <mat-option value="PRESENCIAL">Presencial</mat-option>
+              <mat-option value="VIRTUAL">Virtual</mat-option>
+              <mat-option value="MIXTA">Mixta</mat-option>
+            </mat-select>
+            @if (perfilForm.modalidad().touched() && perfilForm.modalidad().invalid()) {
+              <mat-error>{{ perfilForm.modalidad().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-grid three-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Provincia</mat-label>
+            <input matInput type="text" [formField]="perfilForm.provincia" />
+            @if (perfilForm.provincia().touched() && perfilForm.provincia().invalid()) {
+              <mat-error>{{ perfilForm.provincia().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Cantón</mat-label>
+            <input matInput type="text" [formField]="perfilForm.canton" />
+            @if (perfilForm.canton().touched() && perfilForm.canton().invalid()) {
+              <mat-error>{{ perfilForm.canton().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Distrito</mat-label>
+            <input matInput type="text" [formField]="perfilForm.distrito" />
+            @if (perfilForm.distrito().touched() && perfilForm.distrito().invalid()) {
+              <mat-error>{{ perfilForm.distrito().errors()[0].message }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="publish-box">
+          <mat-checkbox [formField]="perfilForm.disponible">
+            Disponible para nuevos clientes
+          </mat-checkbox>
+          <small>Si está activo, aparecerá como disponible en el marketplace.</small>
+        </div>
+      </section>
+      <section class="form-section media-section">
+  <div class="section-title">
+    <div>
+      <h3>Foto de perfil</h3>
+      <p>Seleccione una imagen en formato JPG, PNG o WEBP.</p>
+    </div>
+  </div>
+  <div class="image-layout">
+    <div class="image-upload-box">
+      <button mat-stroked-button type="button" color="primary" (click)="fileInput.click()">
+        <mat-icon>upload</mat-icon>
+        Seleccionar imagen
+      </button>
+      <input #fileInput hidden type="file" accept="image/jpeg,image/png,image/webp" (change)="onImageSelected($event)" />
+      @if (uploadingImage()) {
+        <div class="uploading">
+          <mat-spinner diameter="28"></mat-spinner>
+          <span>Subiendo imagen...</span>
+        </div>
+      }
+    </div>
+    <div class="image-preview-box">
+      @if (imagePreview()) {
+        <img class="image-preview" [src]="imagePreview()" alt="Foto de perfil" />
+      } @else {
+        <div class="empty-preview">
+          <mat-icon>image_not_supported</mat-icon>
+          <span>Sin imagen seleccionada</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+      <!-- Sección: Especialidades -->
+      <section class="form-section">
+        <div class="section-title">
+          <div>
+            <h3>Especialidades</h3>
+            <p>Seleccione las especialidades que domina.</p>
+          </div>
+        </div>
+        <div class="tags-grid">
+          @for (especialidad of especialidades(); track especialidad.id) {
+            <mat-checkbox
+              class="tag-check"
+              [checked]="isEspecialidadSelected(especialidad.id)"
+              (change)="toggleEspecialidad(especialidad.id, $event.checked)"
+            >
+              {{ especialidad.nombre }}
+            </mat-checkbox>
+          }
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button mat-stroked-button color="accent" class="primary-icon-button" type="button" (click)="cancelar.emit()">
+          <mat-icon>close</mat-icon>
+          Cancelar
+        </button>
+
+        <button mat-stroked-button type="submit" color="primary" class="create-icon-button" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <mat-icon>hourglass_top</mat-icon>
+            Registrando...
+          } @else {
+            <mat-icon>add_circle</mat-icon>
+            Registrar profesional
+          }
+        </button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

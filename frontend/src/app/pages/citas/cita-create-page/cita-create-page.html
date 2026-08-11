@@ -1,0 +1,20 @@
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando formulario...</p>
+  </div>
+} @else if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button routerLink="/servicios">Ver servicios</button>
+  </div>
+} @else {
+  <app-cita-form
+    [saving]="saving()"
+    [cliente]="cliente()"
+    [servicio]="servicio()"
+    (guardar)="guardar($event)"
+    (cancelar)="cancelar()"
+  />
+}
