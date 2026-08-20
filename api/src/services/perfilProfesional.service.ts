@@ -43,6 +43,7 @@ export const perfilProfesionalService = {
                 provincia: true,
                 canton:   true ,
                 distrito:true,
+                imagenPerfilUrl: true,
 
 
                 usuario: {
@@ -126,6 +127,7 @@ export const perfilProfesionalService = {
                     modalidad: true,
 
                     activo: true,
+                    duracionMin:true,
 
                     categoria: {
 

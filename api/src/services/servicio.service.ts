@@ -30,7 +30,9 @@ export const servicioService = {
                 precio: {
                     gte: precioMin,
                     lte: precioMax
-                }
+                },
+
+                activo: true
 
             },
 

@@ -1,6 +1,7 @@
 import { Rol, EstadoUsuario, Modalidad, EstadoCita } from "../generated/prisma";
 import { prisma } from "../src/config/prisma";
 
+
 async function main() {
   console.log("Iniciando seed...");
 

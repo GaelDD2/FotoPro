@@ -508,7 +508,7 @@ async validarCliente(clienteId: number) {
       horaFin
     );
 
-    // El monto se calcula automáticamente desde el precio del servicio
+   
     const montoEstimado = Number(servicio.precio);
 
     return await prisma.$transaction(async (tx) => {
