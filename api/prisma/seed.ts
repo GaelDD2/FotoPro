@@ -1,6 +1,6 @@
 import { Rol, EstadoUsuario, Modalidad, EstadoCita } from "../generated/prisma";
 import { prisma } from "../src/config/prisma";
-
+import bcrypt from 'bcryptjs';
 
 async function main() {
   console.log("Iniciando seed...");
@@ -52,55 +52,66 @@ async function main() {
     ],
   });
 
+
+  const hashAdmin = await bcrypt.hash('admin123', 10);
+  const hashCarlos = await bcrypt.hash('carlos123', 10);
+  const hashLaura = await bcrypt.hash('laura123', 10);
+  const hashAndres = await bcrypt.hash('andres123', 10);
+  const hashSofia = await bcrypt.hash('sofia123', 10);
+  const hashDiego = await bcrypt.hash('diego123', 10);
+  const hashMaria = await bcrypt.hash('maria123', 10);
+  const hashJose = await bcrypt.hash('jose123', 10);
+  const hashAna = await bcrypt.hash('ana123', 10);
+
   await prisma.usuario.createMany({
-    data: [
-      {
-        nombre: "Admin", apellidos: "Sistema",
-        correo: "admin@fotopro.com", contrasenaHash: "hash_admin",
-        telefono: "88880000", rol: Rol.ADMIN, estado: EstadoUsuario.ACTIVO,
-      },
-      {
-        nombre: "Carlos", apellidos: "Mora Rodríguez",
-        correo: "carlos@fotopro.com", contrasenaHash: "hash_carlos",
-        telefono: "88881111", rol: Rol.PROFESIONAL, estado: EstadoUsuario.ACTIVO,
-      },
-      {
-        nombre: "Laura", apellidos: "Jiménez Solís",
-        correo: "laura@fotopro.com", contrasenaHash: "hash_laura",
-        telefono: "88882222", rol: Rol.PROFESIONAL, estado: EstadoUsuario.ACTIVO,
-      },
-      {
-        nombre: "Andrés", apellidos: "Vargas Castro",
-        correo: "andres@fotopro.com", contrasenaHash: "hash_andres",
-        telefono: "88883333", rol: Rol.PROFESIONAL, estado: EstadoUsuario.ACTIVO,
-      },
-      {
-        nombre: "Sofía", apellidos: "Méndez Ulate",
-        correo: "sofia@fotopro.com", contrasenaHash: "hash_sofia",
-        telefono: "88884444", rol: Rol.PROFESIONAL, estado: EstadoUsuario.ACTIVO,
-      },
-      {
-        nombre: "Diego", apellidos: "Rojas Fallas",
-        correo: "diego@fotopro.com", contrasenaHash: "hash_diego",
-        telefono: "88885555", rol: Rol.PROFESIONAL, estado: EstadoUsuario.INACTIVO,
-      },
-      {
-        nombre: "María", apellidos: "Fernández López",
-        correo: "maria@cliente.com", contrasenaHash: "hash_maria",
-        telefono: "88886666", rol: Rol.CLIENTE, estado: EstadoUsuario.ACTIVO,
-      },
-      {
-        nombre: "José", apellidos: "Gutiérrez Pérez",
-        correo: "jose@cliente.com", contrasenaHash: "hash_jose",
-        telefono: "88887777", rol: Rol.CLIENTE, estado: EstadoUsuario.ACTIVO,
-      },
-      {
-        nombre: "Ana", apellidos: "Castro Herrera",
-        correo: "ana@cliente.com", contrasenaHash: "hash_ana",
-        telefono: "88888888", rol: Rol.CLIENTE, estado: EstadoUsuario.ACTIVO,
-      },
-    ],
-  });
+  data: [
+    {
+      nombre: 'Admin', apellidos: 'Sistema',
+      correo: 'admin@fotopro.com', contrasenaHash: hashAdmin,
+      telefono: '88880000', rol: Rol.ADMIN, estado: EstadoUsuario.ACTIVO,
+    },
+    {
+      nombre: 'Carlos', apellidos: 'Mora Rodríguez',
+      correo: 'carlos@fotopro.com', contrasenaHash: hashCarlos,
+      telefono: '88881111', rol: Rol.PROFESIONAL, estado: EstadoUsuario.ACTIVO,
+    },
+    {
+      nombre: 'Laura', apellidos: 'Jiménez Solís',
+      correo: 'laura@fotopro.com', contrasenaHash: hashLaura,
+      telefono: '88882222', rol: Rol.PROFESIONAL, estado: EstadoUsuario.ACTIVO,
+    },
+    {
+      nombre: 'Andrés', apellidos: 'Vargas Castro',
+      correo: 'andres@fotopro.com', contrasenaHash: hashAndres,
+      telefono: '88883333', rol: Rol.PROFESIONAL, estado: EstadoUsuario.ACTIVO,
+    },
+    {
+      nombre: 'Sofía', apellidos: 'Méndez Ulate',
+      correo: 'sofia@fotopro.com', contrasenaHash: hashSofia,
+      telefono: '88884444', rol: Rol.PROFESIONAL, estado: EstadoUsuario.ACTIVO,
+    },
+    {
+      nombre: 'Diego', apellidos: 'Rojas Fallas',
+      correo: 'diego@fotopro.com', contrasenaHash: hashDiego,
+      telefono: '88885555', rol: Rol.PROFESIONAL, estado: EstadoUsuario.INACTIVO,
+    },
+    {
+      nombre: 'María', apellidos: 'Fernández López',
+      correo: 'maria@cliente.com', contrasenaHash: hashMaria,
+      telefono: '88886666', rol: Rol.CLIENTE, estado: EstadoUsuario.ACTIVO,
+    },
+    {
+      nombre: 'José', apellidos: 'Gutiérrez Pérez',
+      correo: 'jose@cliente.com', contrasenaHash: hashJose,
+      telefono: '88887777', rol: Rol.CLIENTE, estado: EstadoUsuario.ACTIVO,
+    },
+    {
+      nombre: 'Ana', apellidos: 'Castro Herrera',
+      correo: 'ana@cliente.com', contrasenaHash: hashAna,
+      telefono: '88888888', rol: Rol.CLIENTE, estado: EstadoUsuario.ACTIVO,
+    },
+  ],
+});
 
   // ================================
   // 3. RECUPERAR IDs PARA MAPEO
