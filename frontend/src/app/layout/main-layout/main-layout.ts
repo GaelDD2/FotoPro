@@ -2,8 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from '../header/header';
 import { Footer } from '../footer/footer';
-import { SesionService } from '../../core/services/sesion.service';
-import { SesionUsuario } from '../../core/models/sesion.model';
+import { AuthService } from '../../core/services/auth.service';
 
 type Rol = 'CLIENTE' | 'ADMIN' | 'PROFESIONAL';
 
@@ -14,9 +13,6 @@ interface MenuItem {
   roles?: Rol[];
 }
 
-// Usuarios de prueba disponibles en el seed
-
-
 @Component({
   selector: 'app-main-layout',
   standalone: true,
@@ -25,13 +21,10 @@ interface MenuItem {
   styleUrl:    './main-layout.css',
 })
 export class MainLayout {
-  private readonly sesionService = inject(SesionService);
+  private readonly authService = inject(AuthService);
 
-  // Exponer el usuario actual del servicio
-  currentUser = this.sesionService.usuario;
-  isAdmin     = this.sesionService.isAdmin;
-
- 
+  currentUser = this.authService.usuario;
+  isAdmin     = this.authService.isAdmin;
 
   publicMenu: MenuItem[] = [
     { label: 'Inicio',     path: '/',              icon: 'home'           },
@@ -42,9 +35,9 @@ export class MainLayout {
   ];
 
   adminMantenimientoMenu: MenuItem[] = [
-    { label: 'Categorías',     path: '/admin/categorias',     icon: 'folder'  },
-    { label: 'Especialidades', path: '/admin/especialidades', icon: 'star'    },
-    { label: 'Profesionales',  path: '/admin/profesionales',  icon: 'badge'   },
+    { label: 'Categorías',     path: '/admin/categorias',     icon: 'folder' },
+    { label: 'Especialidades', path: '/admin/especialidades', icon: 'star'   },
+    { label: 'Profesionales',  path: '/admin/profesionales',  icon: 'badge'  },
   ];
 
   adminGestionMenu: MenuItem[] = [
@@ -59,11 +52,7 @@ export class MainLayout {
     return !!user && item.roles.includes(user.rol as Rol);
   }
 
-  simularUsuario(usuario: SesionUsuario): void {
-    this.sesionService.simularUsuario(usuario);
-  }
-
-  cerrarSesion(): void {
-    this.sesionService.cerrarSesion();
+  logout(): void {
+    this.authService.logout();
   }
 }

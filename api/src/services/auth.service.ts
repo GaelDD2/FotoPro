@@ -85,7 +85,11 @@ export const authService = {
         });
 
         const token = jwt.sign(
-            { id: usuario.id, rol: usuario.rol },
+            {
+                id: usuario.id,
+                correo: usuario.correo,
+                role: usuario.rol,
+            },
             JWT_SECRET,
             { expiresIn: JWT_EXPIRES } as jwt.SignOptions
         );

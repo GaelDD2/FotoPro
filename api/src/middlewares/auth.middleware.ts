@@ -20,16 +20,16 @@ export function authenticateToken(request: AuthRequest, response: Response, next
             .json({ success: false, message: "Formato de token inválido" })
     }
     try {
-        const secret: Secret = process.env.JWT_SECRET || "vj_utn_2026"
+        const secret: Secret = process.env.JWT_SECRET || "secret_dev"
         const decodedToken = jwt.verify(token, secret)
-        if (typeof decodedToken === "string" || !decodedToken.id || !decodedToken.email || !decodedToken.role) {
+        if (typeof decodedToken === "string" || !decodedToken.id || !decodedToken.correo || !decodedToken.role) {
             return response
                 .status(StatusCodes.UNAUTHORIZED)
                 .json({ success: false, message: "Token inválido" })
         }
         request.user = {
             id: Number(decodedToken.id),
-            email: String(decodedToken.email),
+            email: String(decodedToken.correo),
             role: String(decodedToken.role)
         }
         next()

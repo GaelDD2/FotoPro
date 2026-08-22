@@ -96,4 +96,6 @@ get isAdmin(): boolean {
     };
     return colors[rol] ?? '';
   }
+
+  
 }
