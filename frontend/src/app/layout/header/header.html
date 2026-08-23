@@ -71,7 +71,7 @@
           Mi reporte financiero
         </button>
         
-        <button mat-menu-item disabled>
+        <button mat-menu-item (click)="cerrarSesion.emit()">
           <mat-icon>logout</mat-icon>
           Cerrar sesión
         </button>
