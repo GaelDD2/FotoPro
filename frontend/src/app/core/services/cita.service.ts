@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { ApiResponse } from '../models/api-response.model';
-import { Cita, CitaCreateDto } from '../models/cita.model';
+import { AceptarCitaDto, CancelarCitaDto, Cita, CitaCreateDto, CompletarCitaDto, HistorialCita, RechazarCitaDto } from '../models/cita.model';
 
 @Injectable({
   providedIn: 'root',
@@ -86,5 +86,25 @@ listarByProfesional(
 crear(data: CitaCreateDto) {
   return this.http.post<ApiResponse<Cita>>(this.apiUrl, data);
 }
+
+  aceptar(id: number, data: AceptarCitaDto) {
+    return this.http.patch<ApiResponse<Cita>>(`${this.apiUrl}/${id}/aceptar`, data);
+  }
+
+  rechazar(id: number, data: RechazarCitaDto) {
+    return this.http.patch<ApiResponse<Cita>>(`${this.apiUrl}/${id}/rechazar`, data);
+  }
+
+  cancelar(id: number, data: CancelarCitaDto) {
+    return this.http.patch<ApiResponse<Cita>>(`${this.apiUrl}/${id}/cancelar`, data);
+  }
+
+  completar(id: number, data: CompletarCitaDto) {
+    return this.http.patch<ApiResponse<Cita>>(`${this.apiUrl}/${id}/completar`, data);
+  }
+
+  obtenerHistorial(id: number) {
+    return this.http.get<ApiResponse<HistorialCita[]>>(`${this.apiUrl}/${id}/historial`);
+  }
 
 }

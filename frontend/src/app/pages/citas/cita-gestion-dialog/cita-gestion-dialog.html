@@ -1,0 +1,120 @@
+<h2 mat-dialog-title>
+  <mat-icon>event</mat-icon>
+  Gestionar cita
+</h2>
+
+<mat-dialog-content>
+
+  <div class="cita-resumen">
+    <div class="estado-badge" [ngClass]="getEstadoClass(cita().estado)">
+      {{ cita().estado }}
+    </div>
+
+    <div class="dato">
+      <mat-icon>calendar_today</mat-icon>
+      <span>{{ cita().fechaCita | date: 'dd/MM/yyyy' }}</span>
+    </div>
+    <div class="dato">
+      <mat-icon>schedule</mat-icon>
+      <span>{{ cita().horaInicio | date: 'HH:mm' }} – {{ cita().horaFin | date: 'HH:mm' }}</span>
+    </div>
+    <div class="dato">
+      <mat-icon>person</mat-icon>
+      <span>{{ cita().cliente.nombre }} {{ cita().cliente.apellidos }}</span>
+    </div>
+    <div class="dato">
+      <mat-icon>camera_alt</mat-icon>
+      <span>{{ cita().servicio.nombre }} · ₡{{ cita().servicio.precio | number }}</span>
+    </div>
+
+    @if (cita().comentarioCliente) {
+      <div class="comentario">
+        <small>Comentario del cliente</small>
+        <p>{{ cita().comentarioCliente }}</p>
+      </div>
+    }
+
+    @if (cita().comentarioProfesional) {
+      <div class="comentario">
+        <small>Tu comentario / motivo</small>
+        <p>{{ cita().comentarioProfesional }}</p>
+      </div>
+    }
+  </div>
+
+  @if (errorMsg()) {
+    <p class="error-msg">{{ errorMsg() }}</p>
+  }
+
+  @if (vista() === 'detalle' && puedeAceptar()) {
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Comentario opcional al aceptar</mat-label>
+      <textarea matInput rows="2" [ngModel]="comentarioAceptar()" (ngModelChange)="comentarioAceptar.set($event)"></textarea>
+    </mat-form-field>
+  }
+
+  @if (vista() === 'rechazar') {
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Motivo de rechazo (obligatorio)</mat-label>
+      <textarea matInput rows="3" [ngModel]="motivoRechazo()" (ngModelChange)="motivoRechazo.set($event)"></textarea>
+    </mat-form-field>
+  }
+
+  @if (vista() === 'cancelar') {
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Motivo de cancelación (obligatorio)</mat-label>
+      <textarea matInput rows="3" [ngModel]="motivoCancelacion()" (ngModelChange)="motivoCancelacion.set($event)"></textarea>
+    </mat-form-field>
+  }
+
+  @if (cita().estado === 'ACEPTADA' && !puedeCompletar()) {
+    <p class="hint">Podrá marcarla como completada después de la fecha y hora programadas.</p>
+  }
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  @if (vista() === 'detalle') {
+    <button mat-button (click)="cerrar(false)">Cerrar</button>
+
+    @if (puedeRechazar()) {
+      <button mat-stroked-button color="warn" (click)="irARechazar()" [disabled]="guardando()">
+        Rechazar
+      </button>
+    }
+
+    @if (puedeCancelar()) {
+      <button mat-stroked-button (click)="irACancelar()" [disabled]="guardando()">
+        Cancelar cita
+      </button>
+    }
+
+    @if (puedeAceptar()) {
+      <button mat-flat-button color="primary" (click)="aceptar()" [disabled]="guardando()">
+        @if (guardando()) { <mat-spinner diameter="18" /> } @else { Aceptar }
+      </button>
+    }
+
+    @if (cita().estado === 'ACEPTADA') {
+      <button mat-flat-button color="primary" (click)="completar()" [disabled]="guardando() || !puedeCompletar()">
+        @if (guardando()) { <mat-spinner diameter="18" /> } @else { Marcar como completada }
+      </button>
+    }
+  }
+
+  @if (vista() === 'rechazar') {
+    <button mat-button (click)="irADetalle()" [disabled]="guardando()">Volver</button>
+    <button mat-flat-button color="warn" (click)="confirmarRechazo()" [disabled]="guardando()">
+      @if (guardando()) { <mat-spinner diameter="18" /> } @else { Confirmar rechazo }
+    </button>
+  }
+
+  @if (vista() === 'cancelar') {
+    <button mat-button (click)="irADetalle()" [disabled]="guardando()">Volver</button>
+    <button mat-flat-button color="warn" (click)="confirmarCancelacion()" [disabled]="guardando()">
+      @if (guardando()) { <mat-spinner diameter="18" /> } @else { Confirmar cancelación }
+    </button>
+  }
+
+</mat-dialog-actions>

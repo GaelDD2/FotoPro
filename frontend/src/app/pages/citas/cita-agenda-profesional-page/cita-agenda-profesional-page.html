@@ -1,0 +1,41 @@
+<div class="agenda-header">
+  <button mat-stroked-button (click)="volver()">
+    <mat-icon>arrow_back</mat-icon>
+    Volver a mis citas
+  </button>
+  <h1>Agenda de citas</h1>
+</div>
+
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Cargando agenda...</p>
+  </div>
+}
+
+@if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button (click)="cargarAgenda()">Reintentar</button>
+  </div>
+}
+
+@if (!loading() && !error()) {
+
+  @if (citas().length === 0) {
+    <div class="empty-container">
+      <mat-icon>event_busy</mat-icon>
+      <p>Todavía no tiene citas registradas.</p>
+    </div>
+  }
+
+  <div class="agenda-leyenda">
+    <span class="leyenda-item"><i class="dot pendiente"></i> Pendiente</span>
+    <span class="leyenda-item"><i class="dot aceptada"></i> Aceptada</span>
+    <span class="leyenda-item"><i class="dot completada"></i> Completada</span>
+    <span class="leyenda-item"><i class="dot cancelada"></i> Cancelada / Rechazada</span>
+  </div>
+
+  <full-calendar [options]="calendarOptions()" />
+}

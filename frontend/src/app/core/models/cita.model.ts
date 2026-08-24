@@ -57,4 +57,23 @@ export interface CitaCreateDto {
   comentarioCliente: string;
 }
 
+export interface AceptarCitaDto {
+  profesionalUsuarioId: number;
+  comentarioProfesional?: string;
+}
+
+export interface RechazarCitaDto {
+  profesionalUsuarioId: number;
+  motivo: string;
+}
+
+export interface CancelarCitaDto {
+  usuarioId: number;
+  motivo: string;
+}
+
+export interface CompletarCitaDto {
+  profesionalUsuarioId: number;
+}
+
 export interface CitaUpdateDto extends Partial<CitaCreateDto> {}

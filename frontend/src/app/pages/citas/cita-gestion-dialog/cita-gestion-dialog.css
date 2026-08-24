@@ -1,0 +1,50 @@
+.cita-resumen {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dato {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.estado-badge {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+}
+
+.estado-pendiente  { background: #f59e0b; }
+.estado-aceptada   { background: #2563eb; }
+.estado-completada { background: #16a34a; }
+.estado-cancelada  { background: #6b7280; }
+.estado-rechazada  { background: #dc2626; }
+
+.comentario {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.comentario small { color: #6b7280; }
+.comentario p { margin: 4px 0 0; }
+
+.full-width { width: 100%; }
+
+.error-msg {
+  color: #dc2626;
+  font-size: 0.85rem;
+}
+
+.hint {
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-style: italic;
+}

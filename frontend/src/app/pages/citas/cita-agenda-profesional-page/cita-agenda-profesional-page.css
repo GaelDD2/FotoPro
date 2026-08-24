@@ -1,0 +1,60 @@
+.agenda-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.agenda-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.loading-container,
+.error-container,
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 16px;
+  color: #6b7280;
+}
+
+.agenda-leyenda {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.pendiente  { background: #f59e0b; }
+.dot.aceptada   { background: #2563eb; }
+.dot.completada { background: #16a34a; }
+.dot.cancelada  { background: #6b7280; }
+
+::ng-deep .fc-evento-custom {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 4px;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+::ng-deep .fc-evento-hora     { font-weight: 600; font-size: 0.75rem; }
+::ng-deep .fc-evento-servicio { font-size: 0.75rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+::ng-deep .fc-evento-cliente  { font-size: 0.7rem; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
