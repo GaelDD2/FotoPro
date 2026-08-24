@@ -487,10 +487,10 @@ async validarCliente(clienteId: number) {
 
   async crear(data: CreateCitaDto) {
     await this.validarCliente(data.clienteId);
-    await this.validarProfesional(data.perfilProfesionalId);
+    await this.validarProfesional(data.profesionalUsuarioId);
     const servicio = await this.validarServicio(
       data.servicioId,
-      data.perfilProfesionalId
+      data.profesionalUsuarioId
     );
 
     const fechaCita  = new Date(data.fechaCita);
@@ -502,7 +502,7 @@ async validarCliente(clienteId: number) {
     }
 
     await this.validarDisponibilidadHorario(
-      data.perfilProfesionalId,
+      data.profesionalUsuarioId,
       fechaCita,
       horaInicio,
       horaFin
@@ -515,7 +515,7 @@ async validarCliente(clienteId: number) {
       const cita = await tx.cita.create({
         data: {
           clienteId:           data.clienteId,
-          perfilProfesionalId: data.perfilProfesionalId,
+          perfilProfesionalId: data.profesionalUsuarioId,
           servicioId:          data.servicioId,
           modalidad:           data.modalidad,
           estado:              EstadoCita.PENDIENTE,
@@ -660,7 +660,7 @@ async validarCliente(clienteId: number) {
       throw AppError.badRequest("Solo se pueden aceptar citas en estado Pendiente");
     }
 
-    await this.validarActorProfesional(data.perfilProfesionalId, cita.perfilProfesionalId);
+    await this.validarActorProfesional(data.profesionalUsuarioId, cita.perfilProfesionalId);
 
     return await prisma.$transaction(async (tx) => {
       const citaActualizada = await tx.cita.update({
@@ -684,7 +684,7 @@ async validarCliente(clienteId: number) {
       await tx.historialEstadoCita.create({
         data: {
           citaId: id,
-          usuarioId: data.perfilProfesionalId,
+          usuarioId: data.profesionalUsuarioId,
           estadoAnterior: EstadoCita.PENDIENTE,
           estadoNuevo: EstadoCita.ACEPTADA,
           motivo: data.comentarioProfesional ?? "Cita aceptada por el profesional",
@@ -705,7 +705,7 @@ async validarCliente(clienteId: number) {
       throw AppError.badRequest("Solo se pueden rechazar citas en estado Pendiente");
     }
 
-    await this.validarActorProfesional(data.perfilProfesionalId, cita.perfilProfesionalId);
+    await this.validarActorProfesional(data.profesionalUsuarioId, cita.perfilProfesionalId);
 
     return await prisma.$transaction(async (tx) => {
       const citaActualizada = await tx.cita.update({
@@ -729,7 +729,7 @@ async validarCliente(clienteId: number) {
       await tx.historialEstadoCita.create({
         data: {
           citaId: id,
-          usuarioId: data.perfilProfesionalId,
+          usuarioId: data.profesionalUsuarioId,
           estadoAnterior: EstadoCita.PENDIENTE,
           estadoNuevo: EstadoCita.RECHAZADA,
           motivo: data.motivo,
@@ -812,7 +812,7 @@ async validarCliente(clienteId: number) {
       throw AppError.badRequest("Solo se pueden completar citas en estado Aceptada");
     }
 
-    await this.validarActorProfesional(data.perfilProfesionalId, cita.perfilProfesionalId);
+    await this.validarActorProfesional(data.profesionalUsuarioId, cita.perfilProfesionalId);
 
     const fechaHoraFin = this.combinarFechaHora(cita.fechaCita, cita.horaFin);
     if (fechaHoraFin > new Date()) {
@@ -840,7 +840,7 @@ async validarCliente(clienteId: number) {
       await tx.historialEstadoCita.create({
         data: {
           citaId: id,
-          usuarioId: data.perfilProfesionalId,
+          usuarioId: data.profesionalUsuarioId,
           estadoAnterior: EstadoCita.ACEPTADA,
           estadoNuevo: EstadoCita.COMPLETADA,
           motivo: "Cita marcada como completada por el profesional",
