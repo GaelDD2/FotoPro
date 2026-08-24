@@ -309,7 +309,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/profesional/4/disponibilidad",
+              "raw": "http://localhost:3000/profesional/13/disponibilidad",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -317,7 +317,7 @@
               "port": "3000",
               "path": [
                 "profesional",
-                "4",
+                "13",
                 "disponibilidad"
               ]
             }
@@ -606,6 +606,183 @@
                 "cita",
                 "profesional",
                 "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Historial",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/cita/30/historial",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "cita",
+                "30",
+                "historial"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Aceptar CITA",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"perfilProfesionalId\": 19,\r\n  \"comentarioProfesional\": \"Confirmado, llevaré el equipo completo\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/cita/30/aceptar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "cita",
+                "30",
+                "aceptar"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Imagen",
+      "item": [
+        {
+          "name": "Subir Imagen",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "aa2adc02-7dc4-4260-910c-fe36642e407c",
+                  "src": "/C:/Users/Usuario1/Pictures/Screenshots/pSsd.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:3000/images/upload",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "images",
+                "upload"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reporte Excel",
+      "item": [
+        {
+          "name": "Reporte Financiero",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/reporte/profesional/1/financiero",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "reporte",
+                "profesional",
+                "1",
+                "financiero"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"correo\": \"admin@fotopro.com\",\r\n  \"contrasena\": \"admin123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Juan\",\r\n  \"apellidos\": \"Pérez López\",\r\n  \"correo\": \"juan12@fotopro.com\",\r\n  \"contrasena\": \"juan1234\",\r\n  \"telefono\": \"88990011\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "register"
               ]
             }
           },
