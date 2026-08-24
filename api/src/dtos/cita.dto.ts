@@ -5,7 +5,7 @@ export const createCitaSchema = z.object({
     .number({ message: "El cliente es obligatorio" })
     .int()
     .positive("El cliente es obligatorio"),
-  profesionalUsuarioId: z
+  perfilProfesionalId: z
     .number({ message: "El profesional es obligatorio" })
     .int()
     .positive("El profesional es obligatorio"),
@@ -41,11 +41,10 @@ export const createCitaSchema = z.object({
 export const updateCitaSchema = createCitaSchema
   .omit({
     clienteId:           true,
-    profesionalUsuarioId: true,
+    perfilProfesionalId: true,
     servicioId:          true,
   })
   .partial();
-
 
 export const aceptarCitaSchema = z.object({
   profesionalUsuarioId: z
@@ -89,9 +88,11 @@ export const completarCitaSchema = z.object({
     .int()
     .positive("El usuario profesional es obligatorio"),
 });
+
 export type AceptarCitaDto = z.infer<typeof aceptarCitaSchema>;
 export type RechazarCitaDto = z.infer<typeof rechazarCitaSchema>;
 export type CancelarCitaDto = z.infer<typeof cancelarCitaSchema>;
 export type CompletarCitaDto = z.infer<typeof completarCitaSchema>;
+
 export type CreateCitaDto = z.infer<typeof createCitaSchema>;
 export type UpdateCitaDto = z.infer<typeof updateCitaSchema>;

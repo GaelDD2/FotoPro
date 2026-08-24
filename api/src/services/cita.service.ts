@@ -487,10 +487,10 @@ async validarCliente(clienteId: number) {
 
   async crear(data: CreateCitaDto) {
     await this.validarCliente(data.clienteId);
-    await this.validarProfesional(data.profesionalUsuarioId);
+    await this.validarProfesional(data.perfilProfesionalId);
     const servicio = await this.validarServicio(
       data.servicioId,
-      data.profesionalUsuarioId
+      data.perfilProfesionalId
     );
 
     const fechaCita  = new Date(data.fechaCita);
@@ -502,7 +502,7 @@ async validarCliente(clienteId: number) {
     }
 
     await this.validarDisponibilidadHorario(
-      data.profesionalUsuarioId,
+      data.perfilProfesionalId,
       fechaCita,
       horaInicio,
       horaFin
@@ -515,7 +515,7 @@ async validarCliente(clienteId: number) {
       const cita = await tx.cita.create({
         data: {
           clienteId:           data.clienteId,
-          perfilProfesionalId: data.profesionalUsuarioId,
+          perfilProfesionalId: data.perfilProfesionalId,
           servicioId:          data.servicioId,
           modalidad:           data.modalidad,
           estado:              EstadoCita.PENDIENTE,
@@ -627,8 +627,7 @@ async validarCliente(clienteId: number) {
     });
   },
 
-
-  // Valida que el usuario sea el profesional dueño de la cita 
+    // ---- Auxiliar: valida que el usuario sea el profesional dueño de la cita ----
 
   async validarActorProfesional(usuarioId: number, perfilProfesionalId: number) {
     const perfil = await prisma.perfilProfesional.findUnique({
@@ -643,13 +642,13 @@ async validarCliente(clienteId: number) {
     return perfil;
   },
 
-  // Auxiliar: combina la fecha de la cita con una hora (ambas guardadas por separado) 
+  // ---- Auxiliar: combina la fecha de la cita con una hora (ambas guardadas por separado) ----
+
   combinarFechaHora(fecha: Date, hora: Date): Date {
     const resultado = new Date(fecha);
     resultado.setHours(hora.getHours(), hora.getMinutes(), hora.getSeconds(), 0);
     return resultado;
   },
-
 
   // ---- Aceptar ----
 
@@ -694,7 +693,6 @@ async validarCliente(clienteId: number) {
       return citaActualizada;
     });
   },
-
 
   // ---- Rechazar ----
 
