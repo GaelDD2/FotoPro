@@ -46,5 +46,52 @@ export const updateCitaSchema = createCitaSchema
   })
   .partial();
 
+
+export const aceptarCitaSchema = z.object({
+  perfilProfesionalId: z
+    .number({ message: "El usuario profesional es obligatorio" })
+    .int()
+    .positive("El usuario profesional es obligatorio"),
+  comentarioProfesional: z
+    .string()
+    .trim()
+    .max(500, "El comentario no puede superar 500 caracteres")
+    .optional(),
+});
+
+export const rechazarCitaSchema = z.object({
+  perfilProfesionalId: z
+    .number({ message: "El usuario profesional es obligatorio" })
+    .int()
+    .positive("El usuario profesional es obligatorio"),
+  motivo: z
+    .string({ message: "El motivo de rechazo es obligatorio" })
+    .trim()
+    .min(10, "El motivo debe tener al menos 10 caracteres")
+    .max(500, "El motivo no puede superar 500 caracteres"),
+});
+
+export const cancelarCitaSchema = z.object({
+  usuarioId: z
+    .number({ message: "El usuario que cancela es obligatorio" })
+    .int()
+    .positive("El usuario que cancela es obligatorio"),
+  motivo: z
+    .string({ message: "El motivo de cancelación es obligatorio" })
+    .trim()
+    .min(10, "El motivo debe tener al menos 10 caracteres")
+    .max(500, "El motivo no puede superar 500 caracteres"),
+});
+
+export const completarCitaSchema = z.object({
+  perfilProfesionalId: z
+    .number({ message: "El usuario profesional es obligatorio" })
+    .int()
+    .positive("El usuario profesional es obligatorio"),
+});
+export type AceptarCitaDto = z.infer<typeof aceptarCitaSchema>;
+export type RechazarCitaDto = z.infer<typeof rechazarCitaSchema>;
+export type CancelarCitaDto = z.infer<typeof cancelarCitaSchema>;
+export type CompletarCitaDto = z.infer<typeof completarCitaSchema>;
 export type CreateCitaDto = z.infer<typeof createCitaSchema>;
 export type UpdateCitaDto = z.infer<typeof updateCitaSchema>;

@@ -108,6 +108,36 @@ obtenerPorId = async (request: Request, response: Response, next: NextFunction) 
     return sendSuccess(response, cita, "Cita actualizada correctamente");
   };
 
+    aceptar = async (request: Request, response: Response, next: NextFunction) => {
+    const id = parseId(request.params.id);
+    const cita = await citaService.aceptar(id, request.body);
+    return sendSuccess(response, cita, "Cita aceptada correctamente");
+  };
+
+  rechazar = async (request: Request, response: Response, next: NextFunction) => {
+    const id = parseId(request.params.id);
+    const cita = await citaService.rechazar(id, request.body);
+    return sendSuccess(response, cita, "Cita rechazada correctamente");
+  };
+
+  cancelar = async (request: Request, response: Response, next: NextFunction) => {
+    const id = parseId(request.params.id);
+    const cita = await citaService.cancelar(id, request.body);
+    return sendSuccess(response, cita, "Cita cancelada correctamente");
+  };
+
+  completar = async (request: Request, response: Response, next: NextFunction) => {
+    const id = parseId(request.params.id);
+    const cita = await citaService.completar(id, request.body);
+    return sendSuccess(response, cita, "Cita marcada como completada");
+  };
+
+  historial = async (request: Request, response: Response, next: NextFunction) => {
+    const id = parseId(request.params.id);
+    const historial = await citaService.historial(id);
+    return sendSuccess(response, historial, "Historial obtenido correctamente");
+  };
+
 
   listarByUsuario = async (
     request: Request,

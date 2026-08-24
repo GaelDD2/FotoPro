@@ -1,7 +1,7 @@
 import { prisma } from "../config/prisma";
 import { EstadoCita } from "../../generated/prisma";
 import { AppError } from "../utils/app-error";
-import { CreateCitaDto, UpdateCitaDto } from "../dtos/cita.dto";
+import { AceptarCitaDto, CancelarCitaDto, CompletarCitaDto, CreateCitaDto, RechazarCitaDto, UpdateCitaDto } from "../dtos/cita.dto";
 
 export const citaService = {
 
@@ -624,6 +624,240 @@ async validarCliente(clienteId: number) {
           select: { nombre: true, precio: true },
         },
       },
+    });
+  },
+
+
+  // Valida que el usuario sea el profesional dueño de la cita 
+
+  async validarActorProfesional(usuarioId: number, perfilProfesionalId: number) {
+    const perfil = await prisma.perfilProfesional.findUnique({
+      where: { usuarioId },
+    });
+    if (!perfil) {
+      throw AppError.badRequest("El usuario indicado no tiene un perfil profesional");
+    }
+    if (perfil.id !== perfilProfesionalId) {
+      throw AppError.badRequest("El profesional indicado no gestiona esta cita");
+    }
+    return perfil;
+  },
+
+  // Auxiliar: combina la fecha de la cita con una hora (ambas guardadas por separado) 
+  combinarFechaHora(fecha: Date, hora: Date): Date {
+    const resultado = new Date(fecha);
+    resultado.setHours(hora.getHours(), hora.getMinutes(), hora.getSeconds(), 0);
+    return resultado;
+  },
+
+
+  // ---- Aceptar ----
+
+  async aceptar(id: number, data: AceptarCitaDto) {
+    const cita = await this.validarExistencia(id);
+
+    if (cita.estado !== EstadoCita.PENDIENTE) {
+      throw AppError.badRequest("Solo se pueden aceptar citas en estado Pendiente");
+    }
+
+    await this.validarActorProfesional(data.perfilProfesionalId, cita.perfilProfesionalId);
+
+    return await prisma.$transaction(async (tx) => {
+      const citaActualizada = await tx.cita.update({
+        where: { id },
+        data: {
+          estado: EstadoCita.ACEPTADA,
+          comentarioProfesional: data.comentarioProfesional ?? null,
+        },
+        include: {
+          cliente: { select: { nombre: true, apellidos: true } },
+          perfilProfesional: {
+            select: {
+              tituloProfesional: true,
+              usuario: { select: { nombre: true, apellidos: true } },
+            },
+          },
+          servicio: { select: { nombre: true, precio: true } },
+        },
+      });
+
+      await tx.historialEstadoCita.create({
+        data: {
+          citaId: id,
+          usuarioId: data.perfilProfesionalId,
+          estadoAnterior: EstadoCita.PENDIENTE,
+          estadoNuevo: EstadoCita.ACEPTADA,
+          motivo: data.comentarioProfesional ?? "Cita aceptada por el profesional",
+        },
+      });
+
+      return citaActualizada;
+    });
+  },
+
+
+  // ---- Rechazar ----
+
+  async rechazar(id: number, data: RechazarCitaDto) {
+    const cita = await this.validarExistencia(id);
+
+    if (cita.estado !== EstadoCita.PENDIENTE) {
+      throw AppError.badRequest("Solo se pueden rechazar citas en estado Pendiente");
+    }
+
+    await this.validarActorProfesional(data.perfilProfesionalId, cita.perfilProfesionalId);
+
+    return await prisma.$transaction(async (tx) => {
+      const citaActualizada = await tx.cita.update({
+        where: { id },
+        data: {
+          estado: EstadoCita.RECHAZADA,
+          comentarioProfesional: data.motivo,
+        },
+        include: {
+          cliente: { select: { nombre: true, apellidos: true } },
+          perfilProfesional: {
+            select: {
+              tituloProfesional: true,
+              usuario: { select: { nombre: true, apellidos: true } },
+            },
+          },
+          servicio: { select: { nombre: true, precio: true } },
+        },
+      });
+
+      await tx.historialEstadoCita.create({
+        data: {
+          citaId: id,
+          usuarioId: data.perfilProfesionalId,
+          estadoAnterior: EstadoCita.PENDIENTE,
+          estadoNuevo: EstadoCita.RECHAZADA,
+          motivo: data.motivo,
+        },
+      });
+
+      return citaActualizada;
+    });
+  },
+
+  // ---- Cancelar ----
+
+  async cancelar(id: number, data: CancelarCitaDto) {
+    const cita = await this.validarExistencia(id);
+
+    if (cita.estado !== EstadoCita.PENDIENTE && cita.estado !== EstadoCita.ACEPTADA) {
+      throw AppError.badRequest(
+        "Solo se pueden cancelar citas en estado Pendiente o Aceptada"
+      );
+    }
+
+    const esCliente = cita.clienteId === data.usuarioId;
+    let esProfesional = false;
+
+    if (!esCliente) {
+      const perfil = await prisma.perfilProfesional.findUnique({
+        where: { usuarioId: data.usuarioId },
+      });
+      esProfesional = !!perfil && perfil.id === cita.perfilProfesionalId;
+    }
+
+    if (cita.estado === EstadoCita.PENDIENTE && !esCliente) {
+      throw AppError.badRequest("Solo el cliente puede cancelar una cita pendiente");
+    }
+
+    if (cita.estado === EstadoCita.ACEPTADA && !esCliente && !esProfesional) {
+      throw AppError.badRequest(
+        "Solo el cliente o el profesional pueden cancelar una cita aceptada"
+      );
+    }
+
+    const estadoAnterior = cita.estado;
+
+    return await prisma.$transaction(async (tx) => {
+      const citaActualizada = await tx.cita.update({
+        where: { id },
+        data: { estado: EstadoCita.CANCELADA },
+        include: {
+          cliente: { select: { nombre: true, apellidos: true } },
+          perfilProfesional: {
+            select: {
+              tituloProfesional: true,
+              usuario: { select: { nombre: true, apellidos: true } },
+            },
+          },
+          servicio: { select: { nombre: true, precio: true } },
+        },
+      });
+
+      await tx.historialEstadoCita.create({
+        data: {
+          citaId: id,
+          usuarioId: data.usuarioId,
+          estadoAnterior,
+          estadoNuevo: EstadoCita.CANCELADA,
+          motivo: data.motivo,
+        },
+      });
+
+      return citaActualizada;
+    });
+  },
+
+  // ---- Completar ----
+
+  async completar(id: number, data: CompletarCitaDto) {
+    const cita = await this.validarExistencia(id);
+
+    if (cita.estado !== EstadoCita.ACEPTADA) {
+      throw AppError.badRequest("Solo se pueden completar citas en estado Aceptada");
+    }
+
+    await this.validarActorProfesional(data.perfilProfesionalId, cita.perfilProfesionalId);
+
+    const fechaHoraFin = this.combinarFechaHora(cita.fechaCita, cita.horaFin);
+    if (fechaHoraFin > new Date()) {
+      throw AppError.badRequest(
+        "No se puede completar la cita antes de su fecha y hora programadas"
+      );
+    }
+
+    return await prisma.$transaction(async (tx) => {
+      const citaActualizada = await tx.cita.update({
+        where: { id },
+        data: { estado: EstadoCita.COMPLETADA },
+        include: {
+          cliente: { select: { nombre: true, apellidos: true } },
+          perfilProfesional: {
+            select: {
+              tituloProfesional: true,
+              usuario: { select: { nombre: true, apellidos: true } },
+            },
+          },
+          servicio: { select: { nombre: true, precio: true } },
+        },
+      });
+
+      await tx.historialEstadoCita.create({
+        data: {
+          citaId: id,
+          usuarioId: data.perfilProfesionalId,
+          estadoAnterior: EstadoCita.ACEPTADA,
+          estadoNuevo: EstadoCita.COMPLETADA,
+          motivo: "Cita marcada como completada por el profesional",
+        },
+      });
+
+      return citaActualizada;
+    });
+  },
+
+  // ---- Historial ----
+
+  async historial(id: number) {
+    await this.validarExistencia(id);
+    return await prisma.historialEstadoCita.findMany({
+      where: { citaId: id },
+      orderBy: { createdAt: "asc" },
     });
   },
 

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { CitaController } from "../controllers/cita.controller";
 import { validateRequest } from "../middlewares/validate-request.middleware";
-import { createCitaSchema, updateCitaSchema } from "../dtos/cita.dto";
+import { aceptarCitaSchema, cancelarCitaSchema, completarCitaSchema, createCitaSchema, rechazarCitaSchema, updateCitaSchema } from "../dtos/cita.dto";
 import { asyncHandler } from "../middlewares/async-handler.middleware";
 
 
@@ -37,6 +37,37 @@ export class CitaRoutes {
       validateRequest(updateCitaSchema),
       asyncHandler(controller.actualizar)
     );
+
+    // PATCH http://localhost:3000/cita/1/aceptar  (PROFESIONAL)
+        router.patch(
+          "/:id/aceptar",
+          validateRequest(aceptarCitaSchema),
+          asyncHandler(controller.aceptar)
+        );
+
+        // PATCH http://localhost:3000/cita/1/rechazar  (PROFESIONAL)
+        router.patch(
+          "/:id/rechazar",
+          validateRequest(rechazarCitaSchema),
+          asyncHandler(controller.rechazar)
+        );
+
+        // PATCH http://localhost:3000/cita/1/cancelar  (CLIENTE o PROFESIONAL)
+        router.patch(
+          "/:id/cancelar",
+          validateRequest(cancelarCitaSchema),
+          asyncHandler(controller.cancelar)
+        );
+
+        // PATCH http://localhost:3000/cita/1/completar  (PROFESIONAL)
+        router.patch(
+          "/:id/completar",
+          validateRequest(completarCitaSchema),
+          asyncHandler(controller.completar)
+        );
+
+        // GET
+        router.get("/:id/historial", asyncHandler(controller.historial));
 
         return router;
     }
