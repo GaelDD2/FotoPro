@@ -1,0 +1,71 @@
+<div class="agenda-header">
+  <h1>Agenda general</h1>
+</div>
+
+<div class="filtros-bar">
+  <mat-form-field appearance="outline">
+    <mat-label>Estado</mat-label>
+    <mat-select [ngModel]="estadoFiltro()" (ngModelChange)="estadoFiltro.set($event); aplicarFiltros()">
+      <mat-option [value]="null">Todos los estados</mat-option>
+      <mat-option value="PENDIENTE">Pendiente</mat-option>
+      <mat-option value="ACEPTADA">Aceptada</mat-option>
+      <mat-option value="COMPLETADA">Completada</mat-option>
+      <mat-option value="CANCELADA">Cancelada</mat-option>
+      <mat-option value="RECHAZADA">Rechazada</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Profesional</mat-label>
+    <mat-select [ngModel]="profesionalFiltro()" (ngModelChange)="profesionalFiltro.set($event); aplicarFiltros()">
+      <mat-option [value]="null">Todos los profesionales</mat-option>
+      @for (p of profesionales(); track p.id) {
+        <mat-option [value]="p.id">
+          {{ p.usuario.nombre }} {{ p.usuario.apellidos }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  @if (estadoFiltro() || profesionalFiltro()) {
+    <button mat-stroked-button (click)="limpiarFiltros()">
+      <mat-icon>clear</mat-icon>
+      Limpiar filtros
+    </button>
+  }
+</div>
+
+@if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-flat-button (click)="cargarAgenda()">Reintentar</button>
+  </div>
+}
+
+@if (!loading() && !error() && citas().length === 0) {
+  <div class="empty-container">
+    <mat-icon>event_busy</mat-icon>
+    <p>No hay citas en el rango y filtros seleccionados.</p>
+  </div>
+}
+
+<div class="agenda-leyenda">
+  <span class="leyenda-item"><i class="dot pendiente"></i> Pendiente</span>
+  <span class="leyenda-item"><i class="dot aceptada"></i> Aceptada</span>
+  <span class="leyenda-item"><i class="dot completada"></i> Completada</span>
+  <span class="leyenda-item"><i class="dot cancelada"></i> Cancelada / Rechazada</span>
+</div>
+
+<div class="calendario-wrapper">
+
+  @if (loading()) {
+    <div class="loading-overlay">
+      <mat-spinner diameter="48" />
+      <p>Cargando agenda...</p>
+    </div>
+  }
+
+  <full-calendar #calendar [options]="calendarOptions" />
+
+</div>

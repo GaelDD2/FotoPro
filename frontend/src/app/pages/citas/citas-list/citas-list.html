@@ -20,6 +20,13 @@
     Organizar citas
   </button>
   }
+
+  @if (usuarioSimulado()?.rol === 'ADMIN') {
+  <button mat-flat-button color="primary" [routerLink]="['/admin/citas/agenda']">
+    <mat-icon>calendar_view_month</mat-icon>
+    Ver agenda general
+  </button>
+}
 </div>
 
 <!-- Sin sesión -->

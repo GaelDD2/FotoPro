@@ -21,6 +21,7 @@ import { LoginPage } from './pages/auth/login-page/login-page';
 import { RegisterPage } from './pages/auth/register-page/register-page';
 import { authGuard } from './core/guards/auth.guard';
 import { CitasAgendaProfesionalPage } from './pages/citas/cita-agenda-profesional-page/cita-agenda-profesional-page';
+import { CitaAgendaAdminPage } from './pages/citas/cita-agenda-admin-page/cita-agenda-admin-page';
 
 export const routes: Routes = [
 
@@ -45,6 +46,8 @@ export const routes: Routes = [
       { path: 'mi-reporte', component: ReporteFinancieroPage, title: 'Mi reporte financiero' },
 
       { path: 'citas', component: CitasList, canActivate: [authGuard], title: 'Mis Citas' },
+      { path: 'admin/citas', component: CitasList, title: 'Gestión de Citas' },
+      { path: 'admin/citas/agenda', component: CitaAgendaAdminPage, canActivate: [authGuard], title: 'Agenda general' },
 
 
 

@@ -11,12 +11,18 @@ export class CitaService {
   private readonly http   = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/cita`;
 
-  listarAdmin(clienteId?: number, perfilProfesionalId?: number, estado?: string) {
+    listarAdmin(
+    estado?: string,
+    profesionalId?: number,
+    fechaInicio?: string,
+    fechaFin?: string
+  ) {
     let params = new HttpParams();
 
-    if (clienteId)           params = params.set('clienteId',           clienteId);
-    if (perfilProfesionalId) params = params.set('perfilProfesionalId', perfilProfesionalId);
-    if (estado)              params = params.set('estado',              estado);
+    if (estado)        params = params.set('estado', estado);
+    if (profesionalId) params = params.set('profesionalId', profesionalId);
+    if (fechaInicio)   params = params.set('fechaInicio', fechaInicio);
+    if (fechaFin)      params = params.set('fechaFin', fechaFin);
 
     return this.http.get<ApiResponse<Cita[]>>(this.apiUrl, { params });
   }
