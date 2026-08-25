@@ -21,3 +21,234 @@
 .disponibilidad-info small {
     color: var(--mat-sys-on-surface-variant);
 }
+
+.perfil-container {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header */
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.avatar-grande {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--mat-sys-primary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar-grande mat-icon {
+  font-size: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--mat-sys-on-primary-container);
+}
+
+.perfil-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.perfil-header-info h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.rol-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  width: fit-content;
+}
+
+.rol-badge mat-icon {
+  font-size: 0.9rem;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.rol-admin       { background: var(--mat-sys-primary-container);   color: var(--mat-sys-on-primary-container);   }
+.rol-profesional { background: var(--mat-sys-secondary-container); color: var(--mat-sys-on-secondary-container); }
+.rol-cliente     { background: var(--mat-sys-tertiary-container);  color: var(--mat-sys-on-tertiary-container);  }
+
+.estado-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.estado-chip mat-icon {
+  font-size: 0.9rem;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.estado-chip.activo { color: #2e7d32; opacity: 1; }
+
+/* Banners */
+.exito-banner,
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.exito-banner {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.error-banner {
+  background: #ffebee;
+  color: #b71c1c;
+}
+
+/* Cards */
+.info-card,
+.disponibilidad-card {
+  border-radius: 12px;
+}
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-btn {
+  margin-left: auto;
+}
+
+/* Datos en vista lectura */
+.datos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.25rem;
+  padding-top: 0.75rem;
+}
+
+.dato-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dato-item small {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.dato-item strong {
+  font-size: 0.95rem;
+}
+
+/* Formulario */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.rol-field {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Disponibilidad */
+.disponibilidad-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.disponibilidad-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.disponibilidad-info small {
+  opacity: 0.6;
+  font-size: 0.85rem;
+}
+
+.actualizando-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  opacity: 0.6;
+  font-size: 0.85rem;
+}
+
+.perfil-prof-datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.tarifa {
+  color: var(--mat-sys-primary);
+  font-size: 1rem !important;
+}
+
+/* Loading / Error */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .rol-field {
+    grid-column: 1;
+  }
+}

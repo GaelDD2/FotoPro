@@ -95,4 +95,10 @@ usuarioById = async (
 
 };
 
+actualizar = async (req: Request, res: Response, next: NextFunction) => {
+  const id      = parseId(req.params.id);
+  const usuario = await usuarioService.actualizar(id, req.body);
+  return sendSuccess(res, usuario, 'Perfil actualizado correctamente');
+};
+
 }

@@ -21,6 +21,7 @@ export interface UsuarioSesion {
     apellidos: string;
     correo: string;
     rol: Rol;
+    telefono:  string;
     estado: string;
 }
 

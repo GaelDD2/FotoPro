@@ -27,4 +27,8 @@ export class UsuarioService {
   cambiarEstado(id: number, estado: 'ACTIVO' | 'INACTIVO') {
     return this.http.patch<ApiResponse<Usuario>>(`${this.apiUrl}/${id}/estado`, { estado });
   }
+
+  actualizar(id: number, data: Partial<Usuario>) {
+  return this.http.put<ApiResponse<Usuario>>(`${this.apiUrl}/${id}`, data);
+}
 }

@@ -16,6 +16,7 @@ import { ResenaService } from '../../../core/services/resena.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Resena } from '../../../core/models/resena.model';
 import { ResenaFormDialog, ResenaFormDialogData, ResenaFormDialogResult } from '../../resenas/resena-form-dialog/resena-form-dialog';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-cita-detail',
@@ -38,7 +39,7 @@ import { ResenaFormDialog, ResenaFormDialogData, ResenaFormDialogResult } from '
 export class CitaDetail implements OnInit {
   private readonly route        = inject(ActivatedRoute);
   private readonly citaService  = inject(CitaService);
-  private readonly sesionService = inject(SesionService);
+  private readonly authService = inject(AuthService);
     private readonly resenaService = inject(ResenaService);
   private readonly dialog        = inject(MatDialog);
 
@@ -48,10 +49,10 @@ export class CitaDetail implements OnInit {
   error     = signal<string | null>(null);
     resena = signal<Resena | null>(null);
 
-  usuarioActual = this.sesionService.usuario;
-  isCliente     = this.sesionService.isCliente;
-  isProfesional = this.sesionService.isProfesional;
-  isAdmin       = this.sesionService.isAdmin;
+  usuarioActual = this.authService.usuario;
+  isCliente     = this.authService.isCliente;
+  isProfesional = this.authService.isProfesional;
+  isAdmin       = this.authService.isAdmin;
 
   // Calcular duración de la cita en horas y minutos
   duracion = computed(() => {

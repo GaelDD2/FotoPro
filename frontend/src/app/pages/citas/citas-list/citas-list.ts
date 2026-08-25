@@ -11,7 +11,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CitaService } from '../../../core/services/cita.service';
-import { SesionService } from '../../../core/services/sesion.service';
 import { Cita, EstadoCita } from '../../../core/models/cita.model';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';

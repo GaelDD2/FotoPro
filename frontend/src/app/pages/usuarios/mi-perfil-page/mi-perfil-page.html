@@ -3,35 +3,216 @@
     <mat-spinner diameter="48" />
     <p>Cargando tu perfil...</p>
   </div>
-} @else if (error()) {
+} @else if (error() && !usuario()) {
   <div class="error-container">
     <mat-icon>error_outline</mat-icon>
     <p>{{ error() }}</p>
   </div>
-} @else if (perfil(); as p) {
-  <mat-card class="mi-perfil-card">
-    <mat-card-header>
-      <mat-card-title>Mi perfil profesional</mat-card-title>
-      <mat-card-subtitle>{{ p.tituloProfesional }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="disponibilidad-row">
-        <div class="disponibilidad-info">
-          <strong>Disponible para nuevas citas</strong>
-          <small>
-            @if (p.disponible) {
-              Los clientes pueden reservarte servicios ahora mismo.
-            } @else {
-              No aparecerás disponible para nuevas reservas.
-            }
-          </small>
-        </div>
-        <mat-slide-toggle
-          [checked]="p.disponible"
-          [disabled]="actualizando()"
-          (change)="cambiarDisponibilidad($event)"
-        />
+} @else if (usuario(); as u) {
+
+  <div class="perfil-container">
+
+    <!-- Header del perfil -->
+    <div class="perfil-header">
+      <div class="avatar-grande">
+        <mat-icon>{{ getRolIcon(u.rol) }}</mat-icon>
       </div>
-    </mat-card-content>
-  </mat-card>
+      <div class="perfil-header-info">
+        <h1>{{ u.nombre }} {{ u.apellidos }}</h1>
+        <div class="rol-badge rol-{{ u.rol | lowercase }}">
+          <mat-icon>{{ getRolIcon(u.rol) }}</mat-icon>
+          {{ getRolLabel(u.rol) }}
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    @if (exito()) {
+      <div class="exito-banner">
+        <mat-icon>check_circle</mat-icon>
+        {{ exito() }}
+      </div>
+    }
+
+    <!-- Mensaje de error -->
+    @if (error()) {
+      <div class="error-banner">
+        <mat-icon>error_outline</mat-icon>
+        {{ error() }}
+      </div>
+    }
+
+    <!-- Información del usuario -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>person</mat-icon>
+          Información personal
+        </mat-card-title>
+        @if (!editando()) {
+          <button mat-stroked-button (click)="activarEdicion()" class="edit-btn">
+            <mat-icon>edit</mat-icon>
+            Editar
+          </button>
+        }
+      </mat-card-header>
+
+      <mat-card-content>
+
+        @if (!editando()) {
+          <!-- Vista de solo lectura -->
+          <div class="datos-grid">
+            <div class="dato-item">
+              <small>Nombre</small>
+              <strong>{{ u.nombre }}</strong>
+            </div>
+            <div class="dato-item">
+              <small>Apellidos</small>
+              <strong>{{ u.apellidos }}</strong>
+            </div>
+            <div class="dato-item">
+              <small>Correo electrónico</small>
+              <strong>{{ u.correo }}</strong>
+            </div>
+            <div class="dato-item">
+              <small>Teléfono</small>
+              <strong>{{ u.telefono }}</strong>
+            </div>
+            <div class="dato-item">
+              <small>Rol</small>
+              <strong>{{ getRolLabel(u.rol) }}</strong>
+            </div>
+          </div>
+
+        } @else {
+          <!-- Formulario de edición -->
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput
+                [ngModel]="form().nombre"
+                (ngModelChange)="form.update(f => ({ ...f, nombre: $event }))"
+              />
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Apellidos</mat-label>
+              <input matInput
+                [ngModel]="form().apellidos"
+                (ngModelChange)="form.update(f => ({ ...f, apellidos: $event }))"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Correo electrónico</mat-label>
+              <input matInput type="email"
+                [ngModel]="form().correo"
+                (ngModelChange)="form.update(f => ({ ...f, correo: $event }))"
+              />
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Teléfono</mat-label>
+              <input matInput type="tel"
+                [ngModel]="form().telefono"
+                (ngModelChange)="form.update(f => ({ ...f, telefono: $event }))"
+              />
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+
+            <!-- Rol — solo lectura, no editable -->
+            <mat-form-field appearance="outline" class="rol-field">
+              <mat-label>Rol</mat-label>
+              <input matInput [value]="getRolLabel(u.rol)" readonly />
+              <mat-icon matSuffix>lock</mat-icon>
+              <mat-hint>El rol no puede modificarse</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <!-- Acciones del formulario -->
+          <div class="form-actions">
+            <button mat-stroked-button (click)="cancelarEdicion()" [disabled]="guardando()">
+              <mat-icon>close</mat-icon>
+              Cancelar
+            </button>
+            <button mat-flat-button (click)="guardarCambios()" [disabled]="guardando()">
+              @if (guardando()) {
+                <mat-spinner diameter="20" />
+                Guardando...
+              } @else {
+                <mat-icon>save</mat-icon>
+                Guardar cambios
+              }
+            </button>
+          </div>
+        }
+
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Panel de disponibilidad — solo para profesionales -->
+    @if (isProfesional() && perfil(); as p) {
+      <mat-card class="disponibilidad-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>event_available</mat-icon>
+            Disponibilidad
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="disponibilidad-row">
+            <div class="disponibilidad-info">
+              <strong>Disponible para nuevas citas</strong>
+              <small>
+                @if (p.disponible) {
+                  Los clientes pueden reservarte servicios ahora mismo.
+                } @else {
+                  No aparecerás disponible para nuevas reservas.
+                }
+              </small>
+            </div>
+            <mat-slide-toggle
+              [checked]="p.disponible"
+              [disabled]="actualizando()"
+              (change)="cambiarDisponibilidad($event)"
+            />
+          </div>
+
+          @if (actualizando()) {
+            <div class="actualizando-row">
+              <mat-spinner diameter="20" />
+              <small>Actualizando disponibilidad...</small>
+            </div>
+          }
+
+          <!-- Info del perfil profesional -->
+          <mat-divider />
+          <div class="perfil-prof-datos">
+            <div class="dato-item">
+              <small>Título profesional</small>
+              <strong>{{ p.tituloProfesional }}</strong>
+            </div>
+            <div class="dato-item">
+              <small>Modalidad</small>
+              <strong>{{ p.modalidad }}</strong>
+            </div>
+            <div class="dato-item">
+              <small>Ubicación</small>
+              <strong>{{ p.provincia }}, {{ p.canton }}</strong>
+            </div>
+            @if (p.tarifaBase) {
+              <div class="dato-item">
+                <small>Tarifa base</small>
+                <strong class="tarifa">₡{{ p.tarifaBase }}</strong>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+  </div>
 }
