@@ -71,7 +71,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/usuario/7",
+              "raw": "http://localhost:3000/usuario/19",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -79,7 +79,36 @@
               "port": "3000",
               "path": [
                 "usuario",
-                "7"
+                "19"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \r\n  \"correo\": \"diego12@fotopro.com\"\r\n  \r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/usuario/19",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuario",
+                "19"
               ]
             }
           },
@@ -639,7 +668,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"perfilProfesionalId\": 19,\r\n  \"comentarioProfesional\": \"Confirmado, llevaré el equipo completo\"\r\n}",
+              "raw": "{\r\n  \"profesionalUsuarioId\": 17,\r\n  \"comentarioProfesional\": \"Confirmado,estudiare sus productos \"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -647,7 +676,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/cita/30/aceptar",
+              "raw": "http://localhost:3000/cita/31/aceptar",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -655,7 +684,7 @@
               "port": "3000",
               "path": [
                 "cita",
-                "30",
+                "31",
                 "aceptar"
               ]
             }
@@ -783,6 +812,171 @@
               "path": [
                 "auth",
                 "register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reseña",
+      "item": [
+        {
+          "name": "Registrar reseña",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"citaId\": 30,\r\n  \"clienteId\": 24,\r\n  \"puntuacion\": 5,\r\n  \"comentario\": \"Excelente trabajo, muy profesional y puntual.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/resena",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "resena"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Consultar reseña de cita",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/resena/cita/30",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "resena",
+                "cita",
+                "30"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reseñas por profesional",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/resena/profesional/14",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "resena",
+                "profesional",
+                "14"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reporte",
+      "item": [
+        {
+          "name": "Citas por estado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/reporte/citas/estado/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "reporte",
+                "citas",
+                "estado",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Citas por profesional",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/reporte/citas/profesional/14",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "reporte",
+                "citas",
+                "profesional",
+                "14"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Citas de los profesionales",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/reporte/citas/profesional",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "reporte",
+                "citas",
+                "profesional"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Calificaciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/reporte/calificaciones",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "reporte",
+                "calificaciones"
               ]
             }
           },
