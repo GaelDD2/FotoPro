@@ -213,6 +213,15 @@
               <mat-icon>visibility</mat-icon>
               Ver detalle
             </button>
+
+            @if (puedeCancelar(cita)) {
+            <button mat-stroked-button color="warn" (click)="abrirCancelar(cita)">
+              <mat-icon>event_busy</mat-icon>
+              Cancelar
+            </button>
+            }
+
+
           </mat-card-actions>
 
         </mat-card>

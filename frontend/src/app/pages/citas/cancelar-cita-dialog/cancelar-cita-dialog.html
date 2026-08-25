@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>
+  <mat-icon>event_busy</mat-icon>
+  Cancelar cita
+</h2>
+
+<mat-dialog-content>
+  <p>
+    ¿Seguro que deseas cancelar la cita de
+    <strong>{{ data.cita.servicio.nombre }}</strong>
+    el {{ data.cita.fechaCita | date: 'dd/MM/yyyy' }}?
+  </p>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Motivo de cancelación (obligatorio)</mat-label>
+    <textarea matInput rows="3" [ngModel]="motivo()" (ngModelChange)="motivo.set($event)"></textarea>
+  </mat-form-field>
+
+  @if (errorMsg()) {
+    <p class="error-msg">{{ errorMsg() }}</p>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar(false)" [disabled]="guardando()">Volver</button>
+  <button mat-flat-button color="warn" (click)="confirmar()" [disabled]="guardando()">
+    @if (guardando()) { <mat-spinner diameter="18" /> } @else { Confirmar cancelación }
+  </button>
+</mat-dialog-actions>

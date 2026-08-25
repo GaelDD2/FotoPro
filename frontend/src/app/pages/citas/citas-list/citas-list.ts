@@ -19,6 +19,8 @@ import { UsuarioService } from '../../../core/services/usuario.service';
 import { Usuario } from '../../../core/models/usuario.model';
 import { PerfilProfesionalService } from '../../../core/services/perfil-profesional';
 import { PerfilProfesional } from '../../../core/models/perfil-profesional.model';
+import { MatDialog } from '@angular/material/dialog';
+import { CancelarCitaDialog, CancelarCitaDialogData, CancelarCitaDialogResult } from '../cancelar-cita-dialog/cancelar-cita-dialog';
 
 @Component({
   selector: 'app-citas-list',
@@ -38,7 +40,9 @@ import { PerfilProfesional } from '../../../core/models/perfil-profesional.model
     MatProgressSpinnerModule,
     MatChipsModule,
     MatTooltipModule,
+    
   ],
+  providers: [DatePipe],
   templateUrl: './citas-list.html',
   styleUrl: './citas-list.css',
 })
@@ -46,6 +50,8 @@ export class CitasList implements OnInit {
   private readonly citaService = inject(CitaService);
   private readonly usuarioService = inject(UsuarioService);
   private readonly profesionalService = inject(PerfilProfesionalService);
+  private readonly dialog = inject(MatDialog);
+  private readonly datePipe = inject(DatePipe);
 
 
 
@@ -57,11 +63,22 @@ export class CitasList implements OnInit {
   loading = signal(false);
   error = signal<string | null>(null);
 
+   // Clave ordenable 'YYYY-MM-DDTHH:mm' combinando fechaCita + horaInicio
+  private claveOrden(cita: Cita): string {
+    const fecha = this.datePipe.transform(cita.fechaCita, 'yyyy-MM-dd');
+    const hora  = this.datePipe.transform(cita.horaInicio, 'HH:mm');
+    return `${fecha}T${hora}`;
+  }
+
   // Filtrar localmente por estado
   citasFiltradas = computed(() => {
     const estadoFiltro = this.estado();
-    return this.citas().filter((c) =>
+    const filtradas = this.citas().filter((c) =>
       estadoFiltro === null || c.estado === estadoFiltro
+    );
+    // Historial cronológico: más reciente primero
+    return [...filtradas].sort((a, b) =>
+      this.claveOrden(b).localeCompare(this.claveOrden(a))
     );
   });
 
@@ -169,6 +186,29 @@ export class CitasList implements OnInit {
 
   limpiarFiltro(): void {
     this.estado.set(null);
+  }
+
+    puedeCancelar(cita: Cita): boolean {
+    return (
+      this.usuarioSimulado()?.rol === 'CLIENTE' &&
+      (cita.estado === 'PENDIENTE' || cita.estado === 'ACEPTADA')
+    );
+  }
+
+  abrirCancelar(cita: Cita): void {
+    const usuario = this.usuarioSimulado();
+    if (!usuario) return;
+
+    const ref = this.dialog.open(CancelarCitaDialog, {
+      width: '420px',
+      data: { cita, usuarioId: usuario.id } as CancelarCitaDialogData,
+    });
+
+    ref.afterClosed().subscribe((resultado?: CancelarCitaDialogResult) => {
+      if (resultado?.actualizado) {
+        this.cargarCitas();
+      }
+    });
   }
 
   getEstadoClass(estado: EstadoCita): string {
