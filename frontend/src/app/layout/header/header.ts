@@ -41,7 +41,7 @@ export class Header {
   publicMenu             = input.required<MenuItem[]>();
   adminMantenimientoMenu = input.required<MenuItem[]>();
   adminGestionMenu       = input.required<MenuItem[]>();
-
+ reportesMenu = input.required<MenuItem[]>();
  
   canShowItem            = input.required<(item: MenuItem) => boolean>();
 

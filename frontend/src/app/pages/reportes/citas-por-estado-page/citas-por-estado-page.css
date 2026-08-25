@@ -1,0 +1,99 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  color: rgba(0, 0, 0, 0.6);
+  margin: 4px 0 0;
+}
+
+.filtros-card {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.filtros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  align-items: center;
+}
+
+.filtros-acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.loading-container,
+.error-container,
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.total-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.total-card strong {
+  font-size: 32px;
+}
+
+.tabla-card {
+  margin-bottom: 16px;
+}
+
+.tabla-simple {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-simple th,
+.tabla-simple td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.barras {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.barra-fila {
+  display: grid;
+  grid-template-columns: 110px 1fr 140px;
+  align-items: center;
+  gap: 12px;
+}
+
+.barra-track {
+  height: 10px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.barra-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.barra-valor {
+  text-align: right;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+}

@@ -8,7 +8,6 @@
       </span>
       <span class="brand-text">
         <strong>FotoPro</strong>
-       
       </span>
     </a>
 
@@ -34,6 +33,10 @@
         <button mat-button [matMenuTriggerFor]="gestionMenu">
           <mat-icon>admin_panel_settings</mat-icon>
           Gestión
+        </button>
+        <button mat-button [matMenuTriggerFor]="reportesMenuTrigger">
+          <mat-icon>bar_chart</mat-icon>
+          Reportes
         </button>
       }
     </nav>
@@ -70,7 +73,7 @@
           <mat-icon>bar_chart</mat-icon>
           Mi reporte financiero
         </button>
-        
+
         <button mat-menu-item (click)="cerrarSesion.emit()">
           <mat-icon>logout</mat-icon>
           Cerrar sesión
@@ -79,12 +82,10 @@
 
     } @else {
       <!-- Sin usuario — botón de login -->
-  <a mat-flat-button routerLink="/login">
-    <mat-icon>login</mat-icon>
-    Iniciar sesión
-  </a>
-  
-     
+      <a mat-flat-button routerLink="/login">
+        <mat-icon>login</mat-icon>
+        Iniciar sesión
+      </a>
     }
 
     <!-- Menú móvil -->
@@ -114,6 +115,15 @@
   }
 </mat-menu>
 
+<mat-menu #reportesMenuTrigger="matMenu">
+  @for (item of reportesMenu(); track item.path) {
+    <a mat-menu-item [routerLink]="item.path">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.label }}</span>
+    </a>
+  }
+</mat-menu>
+
 <mat-menu #mobileMenu="matMenu">
   @for (item of publicMenu(); track item.path) {
     @if (canShowItem()(item)) {
@@ -131,6 +141,10 @@
     <button mat-menu-item [matMenuTriggerFor]="gestionMenu">
       <mat-icon>admin_panel_settings</mat-icon>
       <span>Gestión</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="reportesMenuTrigger">
+      <mat-icon>bar_chart</mat-icon>
+      <span>Reportes</span>
     </button>
   }
 </mat-menu>

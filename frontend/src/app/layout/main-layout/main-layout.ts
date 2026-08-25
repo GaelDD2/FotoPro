@@ -43,8 +43,14 @@ export class MainLayout {
   adminGestionMenu: MenuItem[] = [
     { label: 'Citas',    path: '/admin/citas',    icon: 'calendar_month' },
     { label: 'Usuarios', path: '/admin/usuarios', icon: 'group'          },
-    { label: 'Reportes', path: '/admin/reportes', icon: 'bar_chart'      },
+    
   ];
+
+  reportesMenu: MenuItem[] = [
+  { label: 'Citas por estado',      path: '/admin/reportes/citas-por-estado',      icon: 'donut_large' },
+  { label: 'Citas por profesional', path: '/admin/reportes/citas-por-profesional', icon: 'groups'      },
+  { label: 'Calificaciones',        path: '/admin/reportes/calificaciones',        icon: 'star_rate'   },
+];
 
   canShowItem(item: MenuItem): boolean {
     if (!item.roles) return true;

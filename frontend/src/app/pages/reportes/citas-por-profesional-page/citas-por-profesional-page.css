@@ -1,0 +1,58 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  color: rgba(0, 0, 0, 0.6);
+  margin: 4px 0 0;
+}
+
+.filtros-card {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.filtros-grid {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.loading-container,
+.error-container,
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.tabla-card {
+  margin-bottom: 16px;
+}
+
+.celda-porcentaje {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-barra-track {
+  width: 80px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.mini-barra-fill {
+  height: 100%;
+  background: #2e9e5b;
+  border-radius: 5px;
+}

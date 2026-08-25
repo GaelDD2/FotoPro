@@ -22,6 +22,9 @@ import { RegisterPage } from './pages/auth/register-page/register-page';
 import { authGuard } from './core/guards/auth.guard';
 import { CitasAgendaProfesionalPage } from './pages/citas/cita-agenda-profesional-page/cita-agenda-profesional-page';
 import { CitaAgendaAdminPage } from './pages/citas/cita-agenda-admin-page/cita-agenda-admin-page';
+import { CitasPorEstadoPage } from './pages/reportes/citas-por-estado-page/citas-por-estado-page';
+import { CitasPorProfesionalPage } from './pages/reportes/citas-por-profesional-page/citas-por-profesional-page';
+import { CalificacionesPage } from './pages/reportes/calificaciones-page/calificaciones-page';
 
 export const routes: Routes = [
 
@@ -59,6 +62,10 @@ export const routes: Routes = [
       { path: 'admin/citas', component: CitasList, title: 'Gestión de Citas' },
       { path: 'admin/categorias', component: CategoriasList, title: 'Categorías' },
       { path: 'admin/especialidades', component: EspecialidadesList, title: 'Especialidades' },
+
+      { path: 'admin/reportes/citas-por-estado', component: CitasPorEstadoPage, canActivate: [authGuard], title: 'Reporte: Citas por estado' },
+      { path: 'admin/reportes/citas-por-profesional', component: CitasPorProfesionalPage, canActivate: [authGuard], title: 'Reporte: Citas por profesional' },
+      { path: 'admin/reportes/calificaciones', component: CalificacionesPage, canActivate: [authGuard], title: 'Reporte: Calificaciones' },
 
     ],
   },

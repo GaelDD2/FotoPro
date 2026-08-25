@@ -1,0 +1,107 @@
+<div class="page-header">
+  <div>
+    <h1>Calificaciones</h1>
+    @if (reporte(); as r) {
+      <p class="subtitle">Umbral de baja calificación: {{ r.umbralBajaCalificacion }}</p>
+    }
+  </div>
+  <button mat-flat-button (click)="cargarReporte()" [disabled]="loading()">
+    <mat-icon>refresh</mat-icon>
+    Actualizar
+  </button>
+</div>
+
+<mat-card class="filtros-card">
+  <div class="filtros-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Umbral de baja calificación</mat-label>
+      <input matInput type="number" step="0.5" min="1" max="5" [(ngModel)]="umbral" />
+    </mat-form-field>
+    <button mat-flat-button (click)="aplicarUmbral()">Aplicar</button>
+  </div>
+</mat-card>
+
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="48" />
+    <p>Generando reporte...</p>
+  </div>
+} @else if (error()) {
+  <div class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+  </div>
+} @else if (reporte(); as r) {
+
+  <mat-card class="tabla-card">
+    <mat-card-header>
+      <mat-card-title>Por profesional</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table class="tabla-simple">
+        <thead>
+          <tr>
+            <th>Profesional</th>
+            <th>Promedio</th>
+            <th>Reseñas</th>
+            <th>Mejor servicio</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of r.profesionales; track p.perfilProfesionalId) {
+            <tr>
+              <td>{{ p.nombre }} {{ p.apellidos }}</td>
+              <td>
+                @if (p.sinResenas) {
+                  <span class="sin-datos">Sin reseñas</span>
+                } @else {
+                  ⭐ {{ p.promedioCalificacion | number: '1.1-2' }}
+                }
+              </td>
+              <td>{{ p.cantidadResenas }}</td>
+              <td>
+                @if (p.mejorServicio) {
+                  {{ p.mejorServicio.nombre }} ({{ p.mejorServicio.promedio | number: '1.1-2' }}⭐)
+                } @else {
+                  <span class="sin-datos">—</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="tabla-card">
+    <mat-card-header>
+      <mat-card-title>
+        Servicios con baja calificación
+        <mat-chip-set>
+          <mat-chip>{{ r.serviciosBajaCalificacion.length }}</mat-chip>
+        </mat-chip-set>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (r.serviciosBajaCalificacion.length === 0) {
+        <p class="sin-datos">Ningún servicio está por debajo del umbral.</p>
+      } @else {
+        <table class="tabla-simple">
+          <thead>
+            <tr><th>Profesional</th><th>Servicio</th><th>Promedio</th><th>Reseñas</th></tr>
+          </thead>
+          <tbody>
+            @for (s of r.serviciosBajaCalificacion; track s.servicioId) {
+              <tr>
+                <td>{{ s.profesional }}</td>
+                <td>{{ s.nombre }}</td>
+                <td>⭐ {{ s.promedio | number: '1.1-2' }}</td>
+                <td>{{ s.cantidadResenas }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </mat-card-content>
+  </mat-card>
+}

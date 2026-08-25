@@ -1,0 +1,53 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  color: rgba(0, 0, 0, 0.6);
+  margin: 4px 0 0;
+}
+
+.filtros-card {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.filtros-grid {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.tabla-card {
+  margin-bottom: 16px;
+}
+
+.tabla-simple {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-simple th,
+.tabla-simple td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.sin-datos {
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+}
