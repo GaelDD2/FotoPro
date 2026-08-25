@@ -2,230 +2,241 @@
   <div>
     <h1>
       @if (usuarioSimulado()?.rol === 'ADMIN') {
-  Gestión de Citas
-} @else {
-  Mis Citas
-}
+      Gestión de Citas
+      } @else {
+      Mis Citas
+      }
     </h1>
     <p class="subtitle">
-     @if (usuarioSimulado(); as user) {
-        {{ user.nombre }} {{ user.apellidos }} · {{ user.rol }}
-        · {{ totalCitas() }} cita(s)
+      @if (usuarioSimulado(); as user) {
+      {{ user.nombre }} {{ user.apellidos }} · {{ user.rol }}
+      · {{ totalCitas() }} cita(s)
       }
     </p>
   </div>
   @if (usuarioSimulado()?.rol === 'PROFESIONAL') {
-    <button mat-flat-button color="primary" [routerLink]="['/citas/agenda']">
-      <mat-icon>calendar_view_week</mat-icon>
-      Organizar citas
-    </button>
+  <button mat-flat-button color="primary" [routerLink]="['/citas/agenda']">
+    <mat-icon>calendar_view_week</mat-icon>
+    Organizar citas
+  </button>
   }
 </div>
 
 <!-- Sin sesión -->
 @if (!usuarioSimulado()) {
-  <div class="empty-container">
-    <mat-icon>login</mat-icon>
-    <p>Debes iniciar sesión para ver tus citas.</p>
-  </div>
+<div class="empty-container">
+  <mat-icon>login</mat-icon>
+  <p>Debes iniciar sesión para ver tus citas.</p>
+</div>
 }
 
 @if (usuarioSimulado()) {
 
-  <!-- Resumen de estados -->
-  <div class="summary-cards">
-    <mat-card class="summary-card pendiente">
-      <mat-icon>schedule</mat-icon>
-      <div>
-        <strong>{{ totalPendientes() }}</strong>
-        <span>Pendientes</span>
-      </div>
-    </mat-card>
-    <mat-card class="summary-card aceptada">
-      <mat-icon>check_circle</mat-icon>
-      <div>
-        <strong>{{ totalAceptadas() }}</strong>
-        <span>Aceptadas</span>
-      </div>
-    </mat-card>
-    <mat-card class="summary-card completada">
-      <mat-icon>task_alt</mat-icon>
-      <div>
-        <strong>{{ totalCompletadas() }}</strong>
-        <span>Completadas</span>
-      </div>
-    </mat-card>
-    <mat-card class="summary-card cancelada">
-      <mat-icon>cancel</mat-icon>
-      <div>
-        <strong>{{ totalCanceladas() }}</strong>
-        <span>Canceladas/Rechazadas</span>
-      </div>
-    </mat-card>
-  </div>
-
-  <!-- Filtro por estado -->
-  <div class="filters-bar">
-    <mat-form-field appearance="outline">
-      <mat-label>Filtrar por estado</mat-label>
-      <mat-select
-        [ngModel]="estado()"
-        (ngModelChange)="estado.set($event)"
-      >
-        <mat-option [value]="null">Todos los estados</mat-option>
-        <mat-option value="PENDIENTE">Pendiente</mat-option>
-        <mat-option value="ACEPTADA">Aceptada</mat-option>
-        <mat-option value="COMPLETADA">Completada</mat-option>
-        <mat-option value="CANCELADA">Cancelada</mat-option>
-        <mat-option value="RECHAZADA">Rechazada</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    @if (estado()) {
-      <button mat-stroked-button (click)="limpiarFiltro()">
-        <mat-icon>clear</mat-icon>
-        Limpiar
-      </button>
-    }
-  </div>
-
-  <!-- Loading -->
-  @if (loading()) {
-    <div class="loading-container">
-      <mat-spinner diameter="48" />
-      <p>Cargando citas...</p>
+<!-- Resumen de estados -->
+<div class="summary-cards">
+  <mat-card class="summary-card pendiente">
+    <mat-icon>schedule</mat-icon>
+    <div>
+      <strong>{{ totalPendientes() }}</strong>
+      <span>Pendientes</span>
     </div>
-  }
-
-  <!-- Error -->
-  @if (error()) {
-    <div class="error-container">
-      <mat-icon>error_outline</mat-icon>
-      <p>{{ error() }}</p>
-      <button mat-flat-button (click)="cargarCitas()">Reintentar</button>
+  </mat-card>
+  <mat-card class="summary-card aceptada">
+    <mat-icon>check_circle</mat-icon>
+    <div>
+      <strong>{{ totalAceptadas() }}</strong>
+      <span>Aceptadas</span>
     </div>
-  }
-
-  <!-- Sin resultados -->
-  @if (!loading() && !error() && citasFiltradas().length === 0) {
-    <div class="empty-container">
-      <mat-icon>calendar_month</mat-icon>
-      <p>No se encontraron citas.</p>
-      @if (estado()) {
-        <button mat-stroked-button (click)="limpiarFiltro()">Ver todas</button>
-      }
+  </mat-card>
+  <mat-card class="summary-card completada">
+    <mat-icon>task_alt</mat-icon>
+    <div>
+      <strong>{{ totalCompletadas() }}</strong>
+      <span>Completadas</span>
     </div>
+  </mat-card>
+  <mat-card class="summary-card cancelada">
+    <mat-icon>cancel</mat-icon>
+    <div>
+      <strong>{{ totalCanceladas() }}</strong>
+      <span>Canceladas/Rechazadas</span>
+    </div>
+  </mat-card>
+</div>
+
+<!-- Filtro por estado -->
+<div class="filters-bar">
+  <mat-form-field appearance="outline">
+    <mat-label>Filtrar por estado</mat-label>
+    <mat-select [ngModel]="estado()" (ngModelChange)="estado.set($event)">
+      <mat-option [value]="null">Todos los estados</mat-option>
+      <mat-option value="PENDIENTE">Pendiente</mat-option>
+      <mat-option value="ACEPTADA">Aceptada</mat-option>
+      <mat-option value="COMPLETADA">Completada</mat-option>
+      <mat-option value="CANCELADA">Cancelada</mat-option>
+      <mat-option value="RECHAZADA">Rechazada</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  @if (estado()) {
+  <button mat-stroked-button (click)="limpiarFiltro()">
+    <mat-icon>clear</mat-icon>
+    Limpiar
+  </button>
   }
+</div>
 
-  <!-- Lista de citas -->
-  @if (!loading() && !error()) {
-    <div class="citas-list">
-      @for (cita of citasFiltradas(); track cita.id) {
-        <mat-card class="cita-card">
+<!-- Loading -->
+@if (loading()) {
+<div class="loading-container">
+  <mat-spinner diameter="48" />
+  <p>Cargando citas...</p>
+</div>
+}
 
-          <!-- Header de la cita -->
-          <div class="cita-header">
-            <div class="cita-servicio">
-              <mat-icon>camera_alt</mat-icon>
-              <strong>{{ cita.servicio?.nombre }}</strong>
-            </div>
-            <div class="estado-badge" [ngClass]="getEstadoClass(cita.estado)">
-              <mat-icon>{{ getEstadoIcon(cita.estado) }}</mat-icon>
-              {{ cita.estado }}
+<!-- Error -->
+@if (error()) {
+<div class="error-container">
+  <mat-icon>error_outline</mat-icon>
+  <p>{{ error() }}</p>
+  <button mat-flat-button (click)="cargarCitas()">Reintentar</button>
+</div>
+}
+
+<!-- Sin resultados -->
+@if (!loading() && !error() && citasFiltradas().length === 0) {
+<div class="empty-container">
+  <mat-icon>calendar_month</mat-icon>
+  <p>No se encontraron citas.</p>
+  @if (estado()) {
+  <button mat-stroked-button (click)="limpiarFiltro()">Ver todas</button>
+  }
+</div>
+}
+
+<!-- Lista de citas -->
+@if (!loading() && !error()) {
+<div class="citas-list">
+  @for (cita of citasFiltradas(); track cita.id) {
+  <mat-card class="cita-card">
+
+    <!-- Header de la cita -->
+    <div class="cita-header">
+      <div class="cita-servicio">
+        <mat-icon>camera_alt</mat-icon>
+        <strong>{{ cita.servicio?.nombre }}</strong>
+      </div>
+      <div class="estado-badge" [ngClass]="getEstadoClass(cita.estado)">
+        <mat-icon>{{ getEstadoIcon(cita.estado) }}</mat-icon>
+        {{ cita.estado }}
+      </div>
+    </div>
+
+    <mat-card-content>
+      <div class="cita-body">
+
+        <!-- Info de fecha y hora -->
+        <div class="cita-info-grid">
+          <div class="info-item">
+            <mat-icon>calendar_today</mat-icon>
+            <div>
+              <small>Fecha</small>
+              <span>{{ cita.fechaCita | date: 'dd/MM/yyyy' }}</span>
             </div>
           </div>
-
-          <mat-card-content>
-            <div class="cita-body">
-
-              <!-- Info de fecha y hora -->
-              <div class="cita-info-grid">
-                <div class="info-item">
-                  <mat-icon>calendar_today</mat-icon>
-                  <div>
-                    <small>Fecha</small>
-                    <span>{{ cita.fechaCita | date: 'dd/MM/yyyy' }}</span>
-                  </div>
-                </div>
-                <div class="info-item">
-                  <mat-icon>schedule</mat-icon>
-                  <div>
-                    <small>Horario</small>
-                    <span>
-                      {{ cita.horaInicio | date: 'HH:mm' }} –
-                      {{ cita.horaFin    | date: 'HH:mm' }}
-                    </span>
-                  </div>
-                </div>
-                <div class="info-item">
-                  <mat-icon>videocam</mat-icon>
-                  <div>
-                    <small>Modalidad</small>
-                    <span>{{ cita.modalidad }}</span>
-                  </div>
-                </div>
-                <div class="info-item">
-                  <mat-icon>payments</mat-icon>
-                  <div>
-                    <small>Monto estimado</small>
-                    <span class="monto">₡{{ cita.montoEstimado | number }}</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Personas involucradas -->
-              <div class="personas">
-                <div class="persona-item">
-                  <mat-icon>person</mat-icon>
-                  <div>
-                    <small>Cliente</small>
-                    <span>
-                      {{ cita.cliente?.nombre }} {{ cita.cliente?.apellidos }}
-                    </span>
-                  </div>
-                </div>
-                <div class="persona-item">
-                  <mat-icon>badge</mat-icon>
-                  <div>
-                    <small>Fotógrafo</small>
-                    <span>
-                      {{ cita.perfilProfesional?.usuario?.nombre }}
-                      {{ cita.perfilProfesional?.usuario?.apellidos }}
-                      · {{ cita.perfilProfesional?.tituloProfesional }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Comentario del cliente -->
-              @if (cita.comentarioCliente) {
-                <div class="comentario">
-                  <mat-icon>comment</mat-icon>
-                  <p>{{ cita.comentarioCliente }}</p>
-                </div>
-              }
-
+          <div class="info-item">
+            <mat-icon>schedule</mat-icon>
+            <div>
+              <small>Horario</small>
+              <span>
+                {{ cita.horaInicio | date: 'HH:mm' }} –
+                {{ cita.horaFin | date: 'HH:mm' }}
+              </span>
             </div>
-          </mat-card-content>
+          </div>
+          <div class="info-item">
+            <mat-icon>videocam</mat-icon>
+            <div>
+              <small>Modalidad</small>
+              <span>{{ cita.modalidad }}</span>
+            </div>
+          </div>
+          <div class="info-item">
+            <mat-icon>payments</mat-icon>
+            <div>
+              <small>Monto estimado</small>
+              <span class="monto">₡{{ cita.montoEstimado | number }}</span>
+            </div>
+          </div>
+        </div>
 
-           <mat-card-actions>
-            <button mat-stroked-button [routerLink]="['/citas', cita.id]">
-              <mat-icon>visibility</mat-icon>
-              Ver detalle
-            </button>
+        <!-- Personas involucradas -->
+        <div class="personas">
+          <div class="persona-item">
+            <mat-icon>person</mat-icon>
+            <div>
+              <small>Cliente</small>
+              <span>
+                {{ cita.cliente?.nombre }} {{ cita.cliente?.apellidos }}
+              </span>
+            </div>
+          </div>
+          <div class="persona-item">
+            <mat-icon>badge</mat-icon>
+            <div>
+              <small>Fotógrafo</small>
+              <span>
+                {{ cita.perfilProfesional?.usuario?.nombre }}
+                {{ cita.perfilProfesional?.usuario?.apellidos }}
+                · {{ cita.perfilProfesional?.tituloProfesional }}
+              </span>
+            </div>
+          </div>
+        </div>
 
-            @if (puedeCancelar(cita)) {
-            <button mat-stroked-button color="warn" (click)="abrirCancelar(cita)">
-              <mat-icon>event_busy</mat-icon>
-              Cancelar
-            </button>
-            }
+        <!-- Comentario del cliente -->
+        @if (cita.comentarioCliente) {
+        <div class="comentario">
+          <mat-icon>comment</mat-icon>
+          <p>{{ cita.comentarioCliente }}</p>
+        </div>
+        }
 
+      </div>
+    </mat-card-content>
 
-          </mat-card-actions>
+    <mat-card-actions>
+      <button mat-stroked-button [routerLink]="['/citas', cita.id]">
+        <mat-icon>visibility</mat-icon>
+        Ver detalle
+      </button>
 
-        </mat-card>
+      @if (puedeCancelar(cita)) {
+      <button mat-stroked-button color="warn" (click)="abrirCancelar(cita)">
+        <mat-icon>event_busy</mat-icon>
+        Cancelar
+      </button>
       }
-    </div>
+
+      @if (puedeCalificar(cita)) {
+      @if (tieneResena(cita)) {
+      <button mat-stroked-button (click)="abrirResena(cita)">
+        <mat-icon>star</mat-icon>
+        Ver mi reseña
+      </button>
+      } @else {
+      <button mat-flat-button color="primary" (click)="abrirResena(cita)">
+        <mat-icon>star_border</mat-icon>
+        Calificar
+      </button>
+      }
+      }
+
+
+    </mat-card-actions>
+
+  </mat-card>
   }
+</div>
+}
 }

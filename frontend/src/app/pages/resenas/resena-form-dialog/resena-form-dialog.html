@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>
+  <mat-icon>star</mat-icon>
+  @if (modoLectura) { Mi reseña } @else { Calificar servicio }
+</h2>
+
+<mat-dialog-content>
+
+  <div class="cita-resumen">
+    <strong>{{ data.cita.servicio.nombre }}</strong>
+    <small>{{ data.cita.fechaCita | date: 'dd/MM/yyyy' }}</small>
+  </div>
+
+  <div class="estrellas">
+    @for (valor of estrellas; track valor) {
+      <mat-icon
+        class="estrella"
+        [class.activa]="valor <= puntuacion()"
+        [class.readonly]="modoLectura"
+        (click)="seleccionarPuntuacion(valor)"
+      >
+        {{ valor <= puntuacion() ? 'star' : 'star_border' }}
+      </mat-icon>
+    }
+  </div>
+
+  @if (modoLectura) {
+    @if (data.resenaExistente?.comentario) {
+      <p class="comentario-lectura">{{ data.resenaExistente?.comentario }}</p>
+    }
+    <small class="fecha-resena">
+      Calificado el {{ data.resenaExistente?.createdAt | date: 'dd/MM/yyyy' }}
+    </small>
+  } @else {
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Comentario (opcional)</mat-label>
+      <textarea matInput rows="3" maxlength="500" [ngModel]="comentario()" (ngModelChange)="comentario.set($event)"></textarea>
+    </mat-form-field>
+  }
+
+  @if (errorMsg()) {
+    <p class="error-msg">{{ errorMsg() }}</p>
+  }
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  @if (modoLectura) {
+    <button mat-button (click)="cerrar(false)">Cerrar</button>
+  } @else {
+    <button mat-button (click)="cerrar(false)" [disabled]="guardando()">Cancelar</button>
+    <button mat-flat-button color="primary" (click)="enviar()" [disabled]="guardando()">
+      @if (guardando()) { <mat-spinner diameter="18" /> } @else { Enviar reseña }
+    </button>
+  }
+</mat-dialog-actions>

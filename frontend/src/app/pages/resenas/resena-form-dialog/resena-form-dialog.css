@@ -1,0 +1,33 @@
+.cita-resumen {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+.cita-resumen small { color: #6b7280; }
+
+.estrellas {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.estrella {
+  cursor: pointer;
+  color: #d1d5db;
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.estrella.activa   { color: #f59e0b; }
+.estrella.readonly { cursor: default; }
+
+.comentario-lectura {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.fecha-resena { color: #6b7280; }
+.full-width { width: 100%; }
+.error-msg { color: #dc2626; font-size: 0.85rem; }

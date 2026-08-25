@@ -21,6 +21,9 @@ import { PerfilProfesionalService } from '../../../core/services/perfil-profesio
 import { PerfilProfesional } from '../../../core/models/perfil-profesional.model';
 import { MatDialog } from '@angular/material/dialog';
 import { CancelarCitaDialog, CancelarCitaDialogData, CancelarCitaDialogResult } from '../cancelar-cita-dialog/cancelar-cita-dialog';
+import { ResenaService } from '../../../core/services/resena.service';
+import { Resena } from '../../../core/models/resena.model';
+import { ResenaFormDialog, ResenaFormDialogData, ResenaFormDialogResult } from '../../resenas/resena-form-dialog/resena-form-dialog';
 
 @Component({
   selector: 'app-citas-list',
@@ -40,7 +43,7 @@ import { CancelarCitaDialog, CancelarCitaDialogData, CancelarCitaDialogResult } 
     MatProgressSpinnerModule,
     MatChipsModule,
     MatTooltipModule,
-    
+
   ],
   providers: [DatePipe],
   templateUrl: './citas-list.html',
@@ -52,6 +55,7 @@ export class CitasList implements OnInit {
   private readonly profesionalService = inject(PerfilProfesionalService);
   private readonly dialog = inject(MatDialog);
   private readonly datePipe = inject(DatePipe);
+  private readonly resenaService = inject(ResenaService);
 
 
 
@@ -62,11 +66,12 @@ export class CitasList implements OnInit {
   estado = signal<string | null>(null);
   loading = signal(false);
   error = signal<string | null>(null);
+  resenasPorCita = signal<Map<number, Resena | null>>(new Map());
 
-   // Clave ordenable 'YYYY-MM-DDTHH:mm' combinando fechaCita + horaInicio
+  // Clave ordenable 'YYYY-MM-DDTHH:mm' combinando fechaCita + horaInicio
   private claveOrden(cita: Cita): string {
     const fecha = this.datePipe.transform(cita.fechaCita, 'yyyy-MM-dd');
-    const hora  = this.datePipe.transform(cita.horaInicio, 'HH:mm');
+    const hora = this.datePipe.transform(cita.horaInicio, 'HH:mm');
     return `${fecha}T${hora}`;
   }
 
@@ -133,6 +138,7 @@ export class CitasList implements OnInit {
               next: (response) => {
                 this.citas.set(response.data);
                 this.loading.set(false);
+                 this.cargarResenasCompletadas();
               },
               error: () => {
                 this.error.set('No se pudieron cargar las citas.');
@@ -188,7 +194,7 @@ export class CitasList implements OnInit {
     this.estado.set(null);
   }
 
-    puedeCancelar(cita: Cita): boolean {
+  puedeCancelar(cita: Cita): boolean {
     return (
       this.usuarioSimulado()?.rol === 'CLIENTE' &&
       (cita.estado === 'PENDIENTE' || cita.estado === 'ACEPTADA')
@@ -210,6 +216,54 @@ export class CitasList implements OnInit {
       }
     });
   }
+
+
+  private cargarResenasCompletadas(): void {
+    const completadas = this.citas().filter((c) => c.estado === 'COMPLETADA');
+    if (completadas.length === 0) return;
+
+    completadas.forEach((cita) => {
+      this.resenaService.obtenerPorCita(cita.id).subscribe({
+        next: (response) => {
+          this.resenasPorCita.update((map) => {
+            const nuevo = new Map(map);
+            nuevo.set(cita.id, response.data);
+            return nuevo;
+          });
+        },
+        error: () => {
+          // silencioso: si falla, esa cita puntual simplemente no distingue estado de reseña
+        },
+      });
+    });
+  }
+
+  puedeCalificar(cita: Cita): boolean {
+    return this.usuarioSimulado()?.rol === 'CLIENTE' && cita.estado === 'COMPLETADA';
+  }
+
+  tieneResena(cita: Cita): boolean {
+    return !!this.resenasPorCita().get(cita.id);
+  }
+
+  abrirResena(cita: Cita): void {
+    const usuario = this.usuarioSimulado();
+    if (!usuario) return;
+
+    const resenaExistente = this.resenasPorCita().get(cita.id) ?? null;
+
+    const ref = this.dialog.open(ResenaFormDialog, {
+      width: '420px',
+      data: { cita, clienteId: usuario.id, resenaExistente } as ResenaFormDialogData,
+    });
+
+    ref.afterClosed().subscribe((resultado?: ResenaFormDialogResult) => {
+      if (resultado?.actualizado) {
+        this.cargarResenasCompletadas();
+      }
+    });
+  }
+
 
   getEstadoClass(estado: EstadoCita): string {
     const clases: Record<EstadoCita, string> = {

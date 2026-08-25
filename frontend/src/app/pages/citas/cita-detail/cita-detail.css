@@ -285,3 +285,15 @@
   font-size: 0.78rem;
   opacity: 0.5;
 }
+
+.resena-puntuacion mat-icon {
+  color: #d1d5db;
+  vertical-align: middle;
+}
+.resena-puntuacion mat-icon.activa { color: #f59e0b; }
+.sin-resena {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #6b7280;
+}

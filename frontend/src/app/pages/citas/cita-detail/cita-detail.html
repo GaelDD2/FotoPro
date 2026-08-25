@@ -186,6 +186,47 @@
         </mat-card-content>
       </mat-card>
 
+      <!-- Reseña -->
+      @if (c.estado === 'COMPLETADA') {
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>star</mat-icon>
+              Reseña
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (resena(); as r) {
+              <div class="resena-puntuacion">
+                @for (valor of [1,2,3,4,5]; track valor) {
+                  <mat-icon [class.activa]="valor <= r.puntuacion">
+                    {{ valor <= r.puntuacion ? 'star' : 'star_border' }}
+                  </mat-icon>
+                }
+              </div>
+              @if (r.comentario) {
+                <p>{{ r.comentario }}</p>
+              }
+              <small>Calificado el {{ r.createdAt | date: 'dd/MM/yyyy' }}</small>
+            } @else if (isCliente()) {
+              <p class="sin-resena">Aún no has calificado este servicio.</p>
+              <button mat-flat-button color="primary" (click)="abrirResena()">
+                <mat-icon>star_border</mat-icon>
+                Calificar servicio
+              </button>
+            } @else {
+              <p class="sin-resena">
+                <mat-icon>hourglass_empty</mat-icon>
+                El cliente aún no ha calificado este servicio.
+              </p>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+
+
+
+
             <!-- Historial de estados -->
       @if (historial().length) {
         <mat-card class="info-card historial-card">

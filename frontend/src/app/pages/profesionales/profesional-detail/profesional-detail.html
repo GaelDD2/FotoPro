@@ -108,6 +108,58 @@
         </mat-card-content>
       </mat-card>
 
+            <!-- Reseñas -->
+      <mat-card class="info-card resenas-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>star</mat-icon>
+            Reseñas y calificación
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+          @if (resenasData(); as data) {
+
+            <div class="promedio-resumen">
+              <div class="promedio-numero">
+                {{ data.promedio ?? '—' }}
+                <mat-icon>star</mat-icon>
+              </div>
+              <small>{{ data.totalResenas }} reseña(s)</small>
+            </div>
+
+            @if (data.resenas.length === 0) {
+              <p class="sin-resenas">Este profesional aún no tiene reseñas.</p>
+            } @else {
+              <mat-divider />
+              <div class="resenas-list">
+                @for (r of data.resenas; track r.id) {
+                  <div class="resena-item">
+                    <div class="resena-header">
+                      <strong>{{ r.cliente.nombre }} {{ r.cliente.apellidos }}</strong>
+                      <div class="resena-puntuacion">
+                        @for (valor of [1,2,3,4,5]; track valor) {
+                          <mat-icon [class.activa]="valor <= r.puntuacion">
+                            {{ valor <= r.puntuacion ? 'star' : 'star_border' }}
+                          </mat-icon>
+                        }
+                      </div>
+                    </div>
+                    @if (r.comentario) {
+                      <p>{{ r.comentario }}</p>
+                    }
+                    <small>{{ r.createdAt | date: 'dd/MM/yyyy' }}</small>
+                  </div>
+                  <mat-divider />
+                }
+              </div>
+            }
+
+          }
+
+        </mat-card-content>
+      </mat-card>
+
       <!-- Especialidades -->
       @if (p.especialidades?.length) {
         <mat-card class="info-card">
@@ -150,6 +202,8 @@
           </mat-card-content>
         </mat-card>
       }
+
+      
 
     </div>
   </div>

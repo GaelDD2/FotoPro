@@ -12,6 +12,10 @@ import { CitaService } from '../../../core/services/cita.service';
 import { SesionService } from '../../../core/services/sesion.service';
 import { Cita, EstadoCita, HistorialCita } from '../../../core/models/cita.model';
 import { forkJoin } from 'rxjs';
+import { ResenaService } from '../../../core/services/resena.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Resena } from '../../../core/models/resena.model';
+import { ResenaFormDialog, ResenaFormDialogData, ResenaFormDialogResult } from '../../resenas/resena-form-dialog/resena-form-dialog';
 
 @Component({
   selector: 'app-cita-detail',
@@ -35,11 +39,14 @@ export class CitaDetail implements OnInit {
   private readonly route        = inject(ActivatedRoute);
   private readonly citaService  = inject(CitaService);
   private readonly sesionService = inject(SesionService);
+    private readonly resenaService = inject(ResenaService);
+  private readonly dialog        = inject(MatDialog);
 
   cita      = signal<Cita | null>(null);
   historial = signal<HistorialCita[]>([]);
   loading   = signal(false);
   error     = signal<string | null>(null);
+    resena = signal<Resena | null>(null);
 
   usuarioActual = this.sesionService.usuario;
   isCliente     = this.sesionService.isCliente;
@@ -68,23 +75,46 @@ export class CitaDetail implements OnInit {
     this.cargarCita(id);
   }
 
-    cargarCita(id: number): void {
+     cargarCita(id: number): void {
     this.loading.set(true);
     this.error.set(null);
 
     forkJoin({
-      cita: this.citaService.obtenerPorId(id),
+      cita:     this.citaService.obtenerPorId(id),
       historial: this.citaService.obtenerHistorial(id),
+      resena:   this.resenaService.obtenerPorCita(id),
     }).subscribe({
-      next: ({ cita, historial }) => {
+      next: ({ cita, historial, resena }) => {
         this.cita.set(cita.data);
         this.historial.set(historial.data);
+        this.resena.set(resena.data);
         this.loading.set(false);
       },
       error: () => {
         this.error.set('No se pudo cargar el detalle de la cita.');
         this.loading.set(false);
       },
+    });
+  }
+
+    abrirResena(): void {
+    const cita = this.cita();
+    const usuario = this.usuarioActual();
+    if (!cita || !usuario) return;
+
+    const ref = this.dialog.open(ResenaFormDialog, {
+      width: '420px',
+      data: {
+        cita,
+        clienteId: usuario.id,
+        resenaExistente: this.resena(),
+      } as ResenaFormDialogData,
+    });
+
+    ref.afterClosed().subscribe((resultado?: ResenaFormDialogResult) => {
+      if (resultado?.actualizado) {
+        this.cargarCita(cita.id);
+      }
     });
   }
 
