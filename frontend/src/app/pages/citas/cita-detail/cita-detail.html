@@ -186,8 +186,8 @@
         </mat-card-content>
       </mat-card>
 
-      <!-- Historial de estados -->
-      @if (c.historial?.length) {
+            <!-- Historial de estados -->
+      @if (historial().length) {
         <mat-card class="info-card historial-card">
           <mat-card-header>
             <mat-card-title>
@@ -197,7 +197,7 @@
           </mat-card-header>
           <mat-card-content>
             <div class="historial-list">
-              @for (h of c.historial; track h.id) {
+              @for (h of historial(); track h.id) {
                 <div class="historial-item">
                   <div class="historial-dot" [class]="getEstadoClass(h.estadoNuevo)">
                     <mat-icon>{{ getEstadoIcon(h.estadoNuevo) }}</mat-icon>
@@ -214,7 +214,7 @@
                       <small class="historial-motivo">{{ h.motivo }}</small>
                     }
                     <small class="historial-fecha">
-                      {{ h.fechaCambio | date: 'dd/MM/yyyy HH:mm' }}
+                      {{ h.createdAt | date: 'dd/MM/yyyy HH:mm' }}
                     </small>
                   </div>
                 </div>

@@ -76,4 +76,14 @@ export interface CompletarCitaDto {
   profesionalUsuarioId: number;
 }
 
+export interface HistorialCita {
+  id:             number;
+  citaId:         number;
+  usuarioId:      number;
+  estadoAnterior: EstadoCita | null;
+  estadoNuevo:    EstadoCita;
+  motivo:         string | null;
+  createdAt:      string;
+}
+
 export interface CitaUpdateDto extends Partial<CitaCreateDto> {}

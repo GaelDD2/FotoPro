@@ -10,7 +10,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CitaService } from '../../../core/services/cita.service';
 import { SesionService } from '../../../core/services/sesion.service';
-import { Cita, EstadoCita } from '../../../core/models/cita.model';
+import { Cita, EstadoCita, HistorialCita } from '../../../core/models/cita.model';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-cita-detail',
@@ -35,9 +36,10 @@ export class CitaDetail implements OnInit {
   private readonly citaService  = inject(CitaService);
   private readonly sesionService = inject(SesionService);
 
-  cita    = signal<Cita | null>(null);
-  loading = signal(false);
-  error   = signal<string | null>(null);
+  cita      = signal<Cita | null>(null);
+  historial = signal<HistorialCita[]>([]);
+  loading   = signal(false);
+  error     = signal<string | null>(null);
 
   usuarioActual = this.sesionService.usuario;
   isCliente     = this.sesionService.isCliente;
@@ -66,13 +68,17 @@ export class CitaDetail implements OnInit {
     this.cargarCita(id);
   }
 
-  cargarCita(id: number): void {
+    cargarCita(id: number): void {
     this.loading.set(true);
     this.error.set(null);
 
-    this.citaService.obtenerPorId(id).subscribe({
-      next: (response) => {
-        this.cita.set(response.data);
+    forkJoin({
+      cita: this.citaService.obtenerPorId(id),
+      historial: this.citaService.obtenerHistorial(id),
+    }).subscribe({
+      next: ({ cita, historial }) => {
+        this.cita.set(cita.data);
+        this.historial.set(historial.data);
         this.loading.set(false);
       },
       error: () => {
