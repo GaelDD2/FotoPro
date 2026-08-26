@@ -66,8 +66,7 @@ export class CitaGestionDialog {
   });
 
   // Combina fechaCita + horaFin en un Date real usando el mismo formato
-  // que ya usas para mostrar horas en citas-list (date:'HH:mm'), así
-  // evitamos problemas de timezone entre lo que muestra el pipe y lo que validamos.
+  
   private fechaHoraFin(cita: Cita): Date {
     const fecha = this.datePipe.transform(cita.fechaCita, 'yyyy-MM-dd');
     const hora = this.datePipe.transform(cita.horaFin, 'HH:mm');

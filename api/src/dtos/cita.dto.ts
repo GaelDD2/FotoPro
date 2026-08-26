@@ -19,7 +19,13 @@ export const createCitaSchema = z.object({
   fechaCita: z
     .string()
     .trim()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "La fecha debe tener formato YYYY-MM-DD"),
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "La fecha debe tener formato YYYY-MM-DD")
+    .refine((fecha) => {
+    const hoy       = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const fechaCita = new Date(fecha);
+    return fechaCita >= hoy;
+  }, "La fecha de la cita no puede ser en el pasado"),
   horaInicio: z
     .string()
     .trim()
