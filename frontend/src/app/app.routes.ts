@@ -60,7 +60,7 @@ export const routes: Routes = [
       { path: 'citas/:id', component: CitaDetail, canActivate: [authGuard], title: 'Cita' },
       { path: 'admin/usuarios', component: UsuariosList, title: 'Gestión de Usuarios' },
       { path: 'admin/citas', component: CitasList, title: 'Gestión de Citas' },
-      { path: 'admin/categorias', component: CategoriasList, title: 'Categorías' },
+      { path: 'admin/categorias', component: CategoriasList,canActivate: [authGuard], title: 'Categorías' },
       { path: 'admin/especialidades', component: EspecialidadesList, title: 'Especialidades' },
 
       { path: 'admin/reportes/citas-por-estado', component: CitasPorEstadoPage, canActivate: [authGuard], title: 'Reporte: Citas por estado' },

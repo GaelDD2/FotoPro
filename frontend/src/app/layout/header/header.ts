@@ -47,7 +47,7 @@ export class Header {
 
   private readonly usuarioService = inject(UsuarioService);
 
-usuario = signal<Usuario | null>(null);
+  usuario = signal<Usuario | null>(null);
 
   cerrarSesion   = output<void>();
 
